@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
+using UniRx.Async;
 using Choi.MyProj.Domain.System;
 using Choi.MyProj.UI;
 
@@ -26,10 +26,10 @@ namespace Choi.MyProj.Repository.System
         public async UniTask<bool> Set(bool isToEnable)
         {
             var mainCam = GameObject.FindWithTag("MainCamera");
-            await UniTask.DelayFrame(PlayerLoopTiming.FixedUpdate);
+            await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             Manager.Instance.VirtualCameraInEditor.gameObject.SetActive(true);
             mainCam.SetActive(false);
-            await UniTask.DelayFrame(PlayerLoopTiming.FixedUpdate);
+            await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             return true;
         }
     }

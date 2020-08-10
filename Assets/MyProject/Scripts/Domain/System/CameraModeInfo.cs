@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.XR;
 using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 
 namespace Choi.MyProj.Domain.System
 {

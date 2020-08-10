@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using UniRx.Async;
 
 namespace Choi.MyProj.Domain.System
 {
