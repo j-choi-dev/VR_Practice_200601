@@ -26,10 +26,10 @@ namespace Choi.MyProj.Repository.System
         public async UniTask<bool> Set(bool isToEnable)
         {
             var mainCam = GameObject.FindWithTag("MainCamera");
-            await UniTask.DelayFrame(PlayerLoopTiming.FixedUpdate);
+            await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             Manager.Instance.VirtualCameraInEditor.gameObject.SetActive(true);
             mainCam.SetActive(false);
-            await UniTask.DelayFrame(PlayerLoopTiming.FixedUpdate);
+            await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             return true;
         }
     }

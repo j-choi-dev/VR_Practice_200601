@@ -1,19 +1,5 @@
 {
   "dependencies": {
-    "com.cysharp.unitask": {
-      "version": "https://github.com/twksos/UniTask.git#upm-1.2.0",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "05042e5cb17806b6bd7c8565bd0afca5d2cd0c68"
-    },
-    "com.neuecc.unirx": {
-      "version": "https://github.com/starikcetin/UniRx.git#7.1.0",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "f93af89f2aafeccfc7aff9dee2cecc6d60ede06b"
-    },
     "com.unity.collab-proxy": {
       "version": "1.2.16",
       "depth": 0,
@@ -47,6 +33,13 @@
     "com.unity.ide.vscode": {
       "version": "1.2.1",
       "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.subsystemregistration": {
+      "version": "1.0.6",
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -95,12 +88,20 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.xr.googlevr.ios": {
-      "version": "2.0.1",
+    "com.unity.xr.legacyinputhelpers": {
+      "version": "2.1.4",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.management": {
+      "version": "3.2.13",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.google.resonance.audio": "2.0.0"
+        "com.unity.xr.legacyinputhelpers": "2.1.2",
+        "com.unity.subsystemregistration": "1.0.6"
       },
       "url": "https://packages.unity.com"
     },

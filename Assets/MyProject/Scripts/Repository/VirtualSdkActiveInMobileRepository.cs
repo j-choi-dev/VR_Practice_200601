@@ -31,7 +31,7 @@ namespace Choi.MyProj.Repository.System
             if (String.Compare(XRSettings.loadedDeviceName, desiredDevice, true) != 0)
             {
                 XRSettings.LoadDeviceByName(desiredDevice);
-                await UniTask.DelayFrame();
+                await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             }
             XRSettings.enabled = isToEnable;
             Debug.Log($"XRSettings.loadedDeviceName After = {XRSettings.loadedDeviceName}");

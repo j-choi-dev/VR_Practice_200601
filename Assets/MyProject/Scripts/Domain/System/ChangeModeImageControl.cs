@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using Choi.MyProj.Domain.System;
@@ -104,7 +102,7 @@ namespace Choi.MyProj.UI.System
                     await VirtualControlAPI.Instance.SetDeviceOrientation(DeviceOrientation.LandscapeLeft);
                 }
                 timer = (int)timer < m_guideImage.Length - 1 ? timer += Time.deltaTime * 3 : 0;
-                await UniTask.DelayFrame(PlayerLoopTiming.FixedUpdate);
+                await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
                 m_image.Set(m_guideImage[(int)timer]);
             }
             return true;
