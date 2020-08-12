@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UniRx.Async;
+using Cysharp.Threading.Tasks;
 using Choi.MyProj.Domain.System;
 using Choi.MyProj.Interface.API.System;
 
