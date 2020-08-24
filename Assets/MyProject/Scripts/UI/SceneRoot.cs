@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using Choi.MyProj.Domain.System;
 using Choi.MyProj.Interface.API.System;
 
 namespace Choi.MyProj.UI.Scene.Test
@@ -49,6 +50,10 @@ namespace Choi.MyProj.UI.Scene.Test
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
+            if (VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual && Application.isEditor)
+            {
+                m_camera.gameObject.SetActive(false);
+            }
             return true;
         }
     }

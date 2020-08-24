@@ -3,46 +3,81 @@ using UnityEngine;
 
 public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
-    [SerializeField]
-    private bool dontDestroyOnLoad = false;
-    private static T instance;
+    /// <summary>
+    /// インスタンス
+    /// </summary>
+    private static volatile T instance;
+
+    /// <summary>
+    /// 同期オブジェクト
+    /// </summary>
+    private static object syncObj = new object();
+
+    /// <summary>
+    /// インスタンスのgetter/setter
+    /// </summary>
     public static T Instance
     {
         get
         {
+            // アプリ終了時に，再度インスタンスの呼び出しがある場合に，オブジェクトを生成することを防ぐ
+            if (applicationIsQuitting)
+            {
+                return null;
+            }
+            // インスタンスがない場合に探す
             if (instance == null)
             {
-                Type t = typeof(T);
+                instance = FindObjectOfType<T>() as T;
 
-                instance = (T)FindObjectOfType(t);
+                // 複数のインスタンスがあった場合
+                if (FindObjectsOfType<T>().Length > 1)
+                {
+                    return instance;
+                }
+
+                // Findで見つからなかった場合、新しくオブジェクトを生成
                 if (instance == null)
                 {
-                    Debug.LogError(t + " をアタッチしているGameObjectはありません");
+                    // 同時にインスタンス生成を呼ばないためにlockする
+                    lock (syncObj)
+                    {
+                        var obj = Resources.Load("Prefabs/Manager");
+                        GameObject gameObject = Instantiate(obj) as GameObject;
+                        // シングルトンオブジェクトだと分かりやすいように名前を設定
+                        gameObject.name = typeof(T).ToString() + " (singleton)";
+                        gameObject.transform.position = Vector3.zero;
+                        instance = gameObject.GetComponent<T>();
+                        // シーン変更時に破棄させない
+                        DontDestroyOnLoad(gameObject);
+                    }
                 }
-            }
 
+            }
             return instance;
         }
+        // インスタンスをnull化するときに使うのでprivateに
+        private set
+        {
+            instance = value;
+        }
     }
 
-    virtual protected void Awake()
+    /// <summary>
+    /// アプリが終了しているかどうか
+    /// </summary>
+    static bool applicationIsQuitting = false;
+
+    void OnApplicationQuit()
     {
-        // 他のGameObjectにアタッチされているか調べる.
-        // アタッチされている場合は破棄する.
-        if (this != Instance)
-        {
-            Destroy(this);
-            //Destroy(this.gameObject);
-            Debug.LogError(
-                typeof(T) +
-                " は既に他のGameObjectにアタッチされているため、コンポーネントを破棄しました." +
-                " アタッチされているGameObjectは " + Instance.gameObject.name + " です.");
-            return;
-        }
-
-        if (dontDestroyOnLoad)
-        {
-            DontDestroyOnLoad(this.gameObject);
-        }
+        applicationIsQuitting = true;
     }
+
+    void OnDestroy()
+    {
+        Instance = null;
+    }
+
+    // コンストラクタをprotectedにすることでインスタンスを生成出来なくする
+    protected SingletonMonoBehaviour() { }
 }
