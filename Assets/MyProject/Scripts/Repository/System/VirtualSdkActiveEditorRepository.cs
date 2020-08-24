@@ -10,7 +10,7 @@ namespace Choi.MyProj.Repository.System
 {
 #if UNITY_EDITOR
     /// <summary>
-    /// Virtual Camera Control Class
+    /// Virtual Camera Control Class In Editor
     /// </summary>
     public class VirtualCameraActiveInEditorRepository : MonoBehaviour, IVirtualCameraActive
     {

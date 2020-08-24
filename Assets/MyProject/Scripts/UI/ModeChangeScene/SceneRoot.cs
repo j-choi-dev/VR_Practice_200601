@@ -10,8 +10,14 @@ using Choi.MyProj.Interface.API.System;
 
 namespace Choi.MyProj.UI.Scene.ModeChangeScene
 {
+    /// <summary>
+    /// Mode Change Scene Riit Class
+    /// </summary>
     public class SceneRoot : SceneRootBase
     {
+        /// <summary>
+        /// シーンで使われる Default カメラ
+        /// </summary>
         [SerializeField] private Camera m_camera;
 
         /// <summary>
@@ -53,16 +59,27 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
             await ChangeModeToVirtual();
         }
 
+        /// <summary>
+        /// シーンで使われる Default カメラを外からアクセス
+        /// </summary>
+        /// <returns>シーンで使われる Default カメラ</returns>
         public override Camera GetSceneDefaultCamera()
         {
             return m_camera;
         }
 
+        /// <summary>
+        /// シーンチェンジメソッド
+        /// </summary>
         public override void SceneChangeToNext()
         {
             SceneManager.LoadScene("666_Test");
         }
 
+        /// <summary>
+        /// Init
+        /// </summary>
+        /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
             return true;
