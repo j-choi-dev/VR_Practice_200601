@@ -4,12 +4,13 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Choi.MyProj.Domain.System;
 using Choi.MyProj.UI;
+using Choi.MyProj.UI.Scene;
 
 namespace Choi.MyProj.Repository.System
 {
 #if UNITY_EDITOR
     /// <summary>
-    /// Virtual Camera Control Class
+    /// Virtual Camera Control Class In Editor
     /// </summary>
     public class VirtualCameraActiveInEditorRepository : MonoBehaviour, IVirtualCameraActive
     {
@@ -25,10 +26,10 @@ namespace Choi.MyProj.Repository.System
         /// <returns>切り替え成功の場合True</returns>
         public async UniTask<bool> Set(bool isToEnable)
         {
-            var mainCam = GameObject.FindWithTag("MainCamera");
+            var mainCamControl = FindObjectOfType<SceneRootBase>();
             await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             Manager.Instance.VirtualCameraInEditor.gameObject.SetActive(true);
-            mainCam.SetActive(false);
+            mainCamControl.GetSceneDefaultCamera();
             await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             return true;
         }

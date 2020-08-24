@@ -1,27 +1,34 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Cysharp.Threading.Tasks;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using Choi.MyProj.Domain.System;
 using Choi.MyProj.Interface.API.System;
 
-namespace Choi.MyProj.UI.System
+namespace Choi.MyProj.UI.Scene.ModeChangeScene
 {
     /// <summary>
-    /// カメラモードチェンジシーンの制御スクリプト
+    /// Mode Change Scene Riit Class
     /// </summary>
-    /// @j_choi 2020.08.06
-    // TODO  ボケてるうちに書いたスクリプト
-    public class ChangeModeImageControl : MonoBehaviour
+    public class SceneRoot : SceneRootBase
     {
+        /// <summary>
+        /// シーンで使われる Default カメラ
+        /// </summary>
+        [SerializeField] private Camera m_camera;
+
         /// <summary>
         /// 背景イメージ
         /// </summary>
         [SerializeField] private Image m_BackGround;
 
         /// <summary>
-        /// LandScape Guide Sprites
+        /// Guide Image Control
         /// </summary>
-        [SerializeField] private Sprite[] m_guideImage;
+        [SerializeField] private GuideImageControl m_guideImageControl;
 
         /// <summary>
         /// LandScape Guide Sprite を表示するイメージ
@@ -46,10 +53,38 @@ namespace Choi.MyProj.UI.System
         /// </summary>
         private async void Start()
         {
+            Debug.Log("[CHOI] Change Scene");
             m_image.gameObject.SetActive(false);
             m_text.gameObject.SetActive(false);
             await ChangeModeToVirtual();
         }
+
+        /// <summary>
+        /// シーンで使われる Default カメラを外からアクセス
+        /// </summary>
+        /// <returns>シーンで使われる Default カメラ</returns>
+        public override Camera GetSceneDefaultCamera()
+        {
+            return m_camera;
+        }
+
+        /// <summary>
+        /// シーンチェンジメソッド
+        /// </summary>
+        public override void SceneChangeToNext()
+        {
+            SceneManager.LoadScene("666_Test");
+        }
+
+        /// <summary>
+        /// Init
+        /// </summary>
+        /// <returns>Initialize Result</returns>
+        public override async UniTask<bool> Init()
+        {
+            return true;
+        }
+
 
         /// <summary>
         /// Change To Virtual Process
@@ -62,9 +97,9 @@ namespace Choi.MyProj.UI.System
                 && VirtualControlAPI.Instance.NowCameraState != CameraState.Normal)
             {
                 Debug.Log($"Already CameraMode Virtual : {VirtualControlAPI.Instance.NowCameraState}");
-                return ;
+                return;
             }
-            if(!await DoCheckLandScape())
+            if (!await DoCheckLandScape())
             {
                 Debug.LogError("Change Device Orientation Error!");
                 return;
@@ -85,13 +120,15 @@ namespace Choi.MyProj.UI.System
             Debug.Log($"Changed CameraMode : {VirtualControlAPI.Instance.NowCameraState}");
             await VirtualControlAPI.Instance.SetVirtualSdkActive(true);
             Debug.Log($"Virtual Sdk Activate : {VirtualControlAPI.Instance.NowSdkActiveState}");
+            SceneChangeToNext();
         }
+
 
         /// <summary>
         /// Change To Landscape Process
         /// </summary>
         /// <returns></returns>
-        private async UniTask <bool> DoCheckLandScape()
+        private async UniTask<bool> DoCheckLandScape()
         {
             var timer = 0f;
             Debug.Log($"nowOrientation DoCheckLandScape : {VirtualControlAPI.Instance.NowDeviceOrientation}");
@@ -101,9 +138,9 @@ namespace Choi.MyProj.UI.System
                 {
                     await VirtualControlAPI.Instance.SetDeviceOrientation(DeviceOrientation.LandscapeLeft);
                 }
-                timer = (int)timer < m_guideImage.Length - 1 ? timer += Time.deltaTime * 3 : 0;
+                timer = (int)timer < m_guideImageControl.Length - 1 ? timer += Time.deltaTime * 3 : 0;
                 await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
-                m_image.Set(m_guideImage[(int)timer]);
+                m_image.Set(m_guideImageControl.GetSprite((int)timer));
             }
             return true;
         }
