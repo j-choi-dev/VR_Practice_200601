@@ -45,7 +45,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
         /// </summary>
         private void Awake()
         {
-            // TODO NULL Check Here
+            base.Awake();
         }
 
         /// <summary>
@@ -82,6 +82,10 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
+            if(VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual && Application.isEditor)
+            {
+                m_camera.gameObject.SetActive(false);
+            }
             return true;
         }
 
@@ -134,7 +138,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
             Debug.Log($"nowOrientation DoCheckLandScape : {VirtualControlAPI.Instance.NowDeviceOrientation}");
             while (VirtualControlAPI.Instance.NowDeviceOrientation != DeviceOrientation.LandscapeLeft)
             {
-                if (VirtualControlAPI.Instance.NowDeviceOrientation != Input.deviceOrientation)
+                if (VirtualControlAPI.Instance.NowDeviceOrientation != Input.deviceOrientation && Input.deviceOrientation == DeviceOrientation.LandscapeLeft)
                 {
                     await VirtualControlAPI.Instance.SetDeviceOrientation(DeviceOrientation.LandscapeLeft);
                 }
