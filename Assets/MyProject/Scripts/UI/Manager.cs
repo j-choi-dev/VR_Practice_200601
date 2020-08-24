@@ -19,6 +19,7 @@ namespace Choi.MyProj.UI
         /// </summary>
         private void Awake()
         {
+            this.transform.position = Vector3.zero;
             DontDestroyOnLoad(this);
         }
 
