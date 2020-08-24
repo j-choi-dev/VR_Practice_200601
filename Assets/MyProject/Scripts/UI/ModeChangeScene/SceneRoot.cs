@@ -26,9 +26,9 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
         [SerializeField] private Image m_BackGround;
 
         /// <summary>
-        /// LandScape Guide Sprites
+        /// Guide Image Control
         /// </summary>
-        [SerializeField] private Sprite[] m_guideImage;
+        [SerializeField] private GuideImageControl m_guideImageControl;
 
         /// <summary>
         /// LandScape Guide Sprite を表示するイメージ
@@ -138,9 +138,9 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
                 {
                     await VirtualControlAPI.Instance.SetDeviceOrientation(DeviceOrientation.LandscapeLeft);
                 }
-                timer = (int)timer < m_guideImage.Length - 1 ? timer += Time.deltaTime * 3 : 0;
+                timer = (int)timer < m_guideImageControl.Length - 1 ? timer += Time.deltaTime * 3 : 0;
                 await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
-                m_image.Set(m_guideImage[(int)timer]);
+                m_image.Set(m_guideImageControl.GetSprite((int)timer));
             }
             return true;
         }
