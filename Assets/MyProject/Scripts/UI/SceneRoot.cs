@@ -14,26 +14,12 @@ namespace Choi.MyProj.UI.Scene.Test
     public class SceneRoot : SceneRootBase
     {
         /// <summary>
-        /// シーンで使われる Default カメラ
-        /// </summary>
-        [SerializeField] private Camera m_camera;
-
-        /// <summary>
         /// Start
         /// </summary>
         private async void Start()
         {
             Debug.Log("[CHOI] Test Scene");
             await Init();
-        }
-
-        /// <summary>
-        /// シーンで使われる Default カメラを外からアクセス
-        /// </summary>
-        /// <returns>シーンで使われる Default カメラ</returns>
-        public override Camera GetSceneDefaultCamera()
-        {
-            return m_camera;
         }
 
         /// <summary>
@@ -53,6 +39,12 @@ namespace Choi.MyProj.UI.Scene.Test
             if (VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual && Application.isEditor)
             {
                 m_camera.gameObject.SetActive(false);
+            }
+            if(VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual)
+            {
+                m_canvas.renderMode = RenderMode.WorldSpace;
+                m_canvas.worldCamera = Application.isEditor ? Manager.Instance.VirtualCameraInEditor.GetCamera() : m_camera;
+                m_canvas.planeDistance = 2f;
             }
             return true;
         }

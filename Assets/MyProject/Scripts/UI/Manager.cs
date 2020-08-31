@@ -12,8 +12,10 @@ namespace Choi.MyProj.UI
     public class Manager : SingletonMonoBehaviour<Manager>
     {
         [SerializeField] private VirtualCameraInEditor m_virtualCamera;
+        [SerializeField] private VirtualInteractionControl m_virtualInteractionControl;
 
         public VirtualCameraInEditor VirtualCameraInEditor => m_virtualCamera;
+        public VirtualInteractionControl VirtualInteractionControl => m_virtualInteractionControl;
 
         public bool IsActive => gameObject.activeSelf;
 
