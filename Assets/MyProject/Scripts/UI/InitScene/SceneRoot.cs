@@ -14,25 +14,11 @@ namespace Choi.MyProj.UI.Scene.Init
     public class SceneRoot : SceneRootBase
     {
         /// <summary>
-        /// シーンで使われる Default カメラ
-        /// </summary>
-        [SerializeField] private Camera m_camera;
-
-        /// <summary>
         /// Start
         /// </summary>
         private void Start()
         {
             Debug.Log("[CHOI] Init Scene");
-        }
-
-        /// <summary>
-        /// シーンで使われる Default カメラを外からアクセス
-        /// </summary>
-        /// <returns>シーンで使われる Default カメラ</returns>
-        public override Camera GetSceneDefaultCamera()
-        {
-            return m_camera;
         }
 
         /// <summary>
