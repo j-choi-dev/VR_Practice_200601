@@ -18,7 +18,6 @@ namespace Choi.MyProj.UI.Scene
         protected void Awake()
         {
             var isActive = Manager.Instance.IsActive;
-            Manager.Instance.VirtualInteractionControl.Init(m_canvas, m_camera);
             Debug.Log("SceneRootBase Awake");
         }
 
