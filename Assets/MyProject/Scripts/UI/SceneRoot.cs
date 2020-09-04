@@ -48,5 +48,10 @@ namespace Choi.MyProj.UI.Scene.Test
             }
             return true;
         }
+
+        public void OnButtonClick()
+        {
+            Debug.Log("Clicked");
+        }
     }
 }
