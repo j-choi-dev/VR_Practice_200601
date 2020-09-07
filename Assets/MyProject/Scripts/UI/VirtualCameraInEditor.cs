@@ -19,14 +19,29 @@ namespace Choi.MyProj.UI.System
         [SerializeField] private Camera m_camRight;
 
         /// <summary>
+        /// Editorでのカメラ(Face For Center)
+        /// </summary>
+        [SerializeField] private Camera m_camCenter;
+
+        /// <summary>
         /// Cameraを取得
         /// </summary>
         /// <param name="isLeft"></param>
         /// <returns></returns>
-        public Camera GetCamera(bool isLeft = true)
+        public Camera GetCamera(bool isLeft)
         {
             return isLeft ? m_camLeft : m_camRight;
         }
+
+        /// <summary>
+        /// Cameraを取得
+        /// </summary>
+        /// <returns></returns>
+        public Camera GetCamera()
+        {
+            return m_camCenter;
+        }
+
         /// <summary>
         /// Rotation Speed
         /// </summary>
