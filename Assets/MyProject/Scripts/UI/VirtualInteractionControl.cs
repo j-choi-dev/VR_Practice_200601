@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 
 namespace Choi.MyProj.UI
 {
+    /// <summary>
+    /// VR 環境で Gaze による UI 制御スクリプト(Event System に紐づける)
+    /// </summary>
 	public class VirtualInteractionControl : PointerInputModule
 	{
 		/// <summary>
