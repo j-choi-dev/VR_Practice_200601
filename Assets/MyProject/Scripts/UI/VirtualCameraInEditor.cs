@@ -9,25 +9,6 @@ namespace Choi.MyProj.UI.System
     public class VirtualCameraInEditor : MonoBehaviour
     {
         /// <summary>
-        /// Editorでのカメラ(Left)
-        /// </summary>
-        [SerializeField] private Camera m_camLeft;
-
-        /// <summary>
-        /// Editorでのカメラ(Right)
-        /// </summary>
-        [SerializeField] private Camera m_camRight;
-
-        /// <summary>
-        /// Cameraを取得
-        /// </summary>
-        /// <param name="isLeft"></param>
-        /// <returns></returns>
-        public Camera GetCamera(bool isLeft = true)
-        {
-            return isLeft ? m_camLeft : m_camRight;
-        }
-        /// <summary>
         /// Rotation Speed
         /// </summary>
         private const float turnSpeed = 270;

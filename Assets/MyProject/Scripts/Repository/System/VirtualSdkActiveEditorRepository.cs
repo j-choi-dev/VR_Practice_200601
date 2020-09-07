@@ -29,7 +29,7 @@ namespace Choi.MyProj.Repository.System
             var mainCamControl = FindObjectOfType<SceneRootBase>();
             await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             Manager.Instance.VirtualCameraInEditor.gameObject.SetActive(true);
-            mainCamControl.Camera.gameObject.SetActive(false);
+            mainCamControl.GetSceneDefaultCamera();
             await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             return true;
         }
