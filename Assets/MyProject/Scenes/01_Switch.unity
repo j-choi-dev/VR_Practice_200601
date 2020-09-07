@@ -675,6 +675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_camera: {fileID: 1524382306}
+  m_canvas: {fileID: 2097567835}
   m_BackGround: {fileID: 139381582}
   m_guideImageControl: {fileID: 442800462}
   m_image: {fileID: 221004411}
