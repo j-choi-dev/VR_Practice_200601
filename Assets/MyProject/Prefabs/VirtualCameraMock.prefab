@@ -128,8 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc96f838dee344c9caab5e0f55f3e003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  turnSpeed: 540
+  m_camLeft: {fileID: 6389071017859788208}
+  m_camRight: {fileID: 1924460603510967183}
 --- !u!1 &6389071017859788213
 GameObject:
   m_ObjectHideFlags: 0

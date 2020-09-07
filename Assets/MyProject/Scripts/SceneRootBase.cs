@@ -10,6 +10,8 @@ namespace Choi.MyProj.UI.Scene
     /// </summary>
     public abstract class SceneRootBase : MonoBehaviour
     {
+        [SerializeField] protected Camera m_camera;
+        [SerializeField] protected Canvas m_canvas;
         /// <summary>
         /// Awake
         /// </summary>
@@ -20,10 +22,14 @@ namespace Choi.MyProj.UI.Scene
         }
 
         /// <summary>
-        /// シーンで使われる Default カメラを外からアクセス
+        /// シーンで使われる Default カメラを取得する
         /// </summary>
-        /// <returns>シーンで使われる Default カメラ</returns>
-        public abstract Camera GetSceneDefaultCamera();
+        public Camera Camera => m_camera;
+
+        /// <summary>
+        /// シーンのCanvasを取得
+        /// </summary>
+        public Canvas Canvas => m_canvas;
 
         /// <summary>
         /// シーンチェンジメソッド
