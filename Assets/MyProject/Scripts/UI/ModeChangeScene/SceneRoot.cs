@@ -16,6 +16,11 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
     public class SceneRoot : SceneRootBase
     {
         /// <summary>
+        /// シーンで使われる Default カメラ
+        /// </summary>
+        [SerializeField] private Camera m_camera;
+
+        /// <summary>
         /// 背景イメージ
         /// </summary>
         [SerializeField] private Image m_BackGround;
@@ -52,6 +57,15 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
             m_image.gameObject.SetActive(false);
             m_text.gameObject.SetActive(false);
             await ChangeModeToVirtual();
+        }
+
+        /// <summary>
+        /// シーンで使われる Default カメラを外からアクセス
+        /// </summary>
+        /// <returns>シーンで使われる Default カメラ</returns>
+        public override Camera GetSceneDefaultCamera()
+        {
+            return m_camera;
         }
 
         /// <summary>
