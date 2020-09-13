@@ -10,6 +10,7 @@ namespace Choi.MyProj.UI
     /// <summary>
     /// VR 環境で Gaze による UI 制御スクリプト(Event System に紐づける)
     /// </summary>
+    /// TODO こいつが一亜bん賢い方法みたいな気がするけど、なぜか Google Card Board ではうまく作動しない。
 	public class VirtualInteractionControl : PointerInputModule
 	{
 		/// <summary>
@@ -38,8 +39,6 @@ namespace Choi.MyProj.UI
         /// <remarks>Updateタイムで呼ばれる</remarks>
 		public override void Process()
 		{
-			CanvasObjectLook();
-			HandleSelection();
 		}
 
         /// <summary>

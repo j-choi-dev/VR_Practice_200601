@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Choi.MyProj.UI;
 using Cysharp.Threading.Tasks;
+using Choi.MyProj.Interface.API.System;
+using Choi.MyProj.Domain.System;
 
 namespace Choi.MyProj.UI.Scene
 {
@@ -19,6 +23,12 @@ namespace Choi.MyProj.UI.Scene
         {
             var isActive = Manager.Instance.IsActive;
             Debug.Log("SceneRootBase Awake");
+            if (VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual)
+            {
+                Manager.Instance.SetNowCamera(Application.isEditor ? Manager.Instance.VirtualCameraInEditor.GetCamera() : m_camera);
+                return;
+            }
+            Manager.Instance.SetNowCamera(m_camera);
         }
 
         /// <summary>
