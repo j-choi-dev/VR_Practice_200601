@@ -13,6 +13,8 @@ namespace Choi.MyProj.UI
     {
         [SerializeField] private VirtualCameraInEditor m_virtualCamera;
 
+        [SerializeField] public Camera NowCamera { get; private set; }
+
         public VirtualCameraInEditor VirtualCameraInEditor => m_virtualCamera;
 
         public bool IsActive => gameObject.activeSelf;
@@ -44,5 +46,7 @@ namespace Choi.MyProj.UI
                 await VirtualControlAPI.Instance.SetDeviceOrientation(DeviceOrientationInfo.Value == DeviceOrientation.Portrait ? DeviceOrientation.LandscapeLeft : DeviceOrientation.Portrait);
             }
         }
+
+        public void SetNowCamera(Camera camera) => NowCamera = camera;
     }
 }
