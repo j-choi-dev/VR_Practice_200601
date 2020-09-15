@@ -17,7 +17,7 @@ namespace Choi.MyProj.Repository.System
         /// <summary>
         /// 現在活性化状態なのかを取得
         /// </summary>
-        public bool IsEnabled => Manager.Instance.VirtualCameraInEditor.gameObject.activeSelf;
+        public bool IsEnabled => Manager.Instance.IsVirtualCameraInEditorActive;
 
         /// <summary>
         /// Activeを設定する
@@ -28,7 +28,7 @@ namespace Choi.MyProj.Repository.System
         {
             var mainCamControl = FindObjectOfType<SceneRootBase>();
             await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
-            Manager.Instance.VirtualCameraInEditor.gameObject.SetActive(true);
+            Manager.Instance.VirtualCameraInEditorActive(true);
             mainCamControl.Camera.gameObject.SetActive(false);
             await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
             return true;

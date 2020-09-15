@@ -7,6 +7,8 @@ using Choi.MyProj.UI;
 using Cysharp.Threading.Tasks;
 using Choi.MyProj.Interface.API.System;
 using Choi.MyProj.Domain.System;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace Choi.MyProj.UI.Scene
 {
@@ -31,30 +33,39 @@ namespace Choi.MyProj.UI.Scene
         /// <summary>
         /// Awake
         /// </summary>
-        protected void Awake()
+        protected async Task Awake()
         {
             var isActive = Manager.Instance.IsActive;
-            Debug.Log("SceneRootBase Awake");
-            if (VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual)
-            {
 #if UNITY_EDITOR
-                var virtualState = new Repository.Editor.VirtualStateInEditorRepository();
-                if (virtualState.Get() != VirtualState.Virtual)
-                {
-                    SetNormalCanvas();
-                    return;
-                }
-#endif
+            var virtualState = new Repository.Editor.VirtualStateInEditorRepository();
+            if (virtualState.Get() == VirtualState.Virtual)
+            {
+                Manager.Instance.VirtualCameraInEditorActive(true);
+                m_camera.gameObject.SetActive(false);
+                Manager.Instance.SetNowCamera(Manager.Instance.VirtualCameraInEditor.GetCamera());
+                await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
                 SetVirtualCanvas();
                 return;
             }
+
+            Manager.Instance.VirtualCameraInEditorActive(false);
+            m_camera.gameObject.SetActive(true);
+            SetNormalCanvas();
+            return;
+#endif
+            if (VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual)
+            {
+                Manager.Instance.SetNowCamera(m_camera);
+                SetVirtualCanvas();
+                return;
+            }
+            Manager.Instance.SetNowCamera(m_camera);
             SetNormalCanvas();
             return;
         }
 
         private bool SetNormalCanvas()
         {
-            Manager.Instance.SetNowCamera(m_camera);
             m_canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             m_canvas.GetComponent<GraphicRaycaster>().enabled = true;
             return true;
@@ -64,7 +75,7 @@ namespace Choi.MyProj.UI.Scene
         {
             m_canvas.renderMode = RenderMode.WorldSpace;
             m_canvas.planeDistance = 2f;
-            Manager.Instance.SetNowCamera(Application.isEditor ? Manager.Instance.VirtualCameraInEditor.GetCamera() : m_camera);
+            m_canvas.worldCamera = Manager.Instance.NowCamera;
             return true;
         }
 

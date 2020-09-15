@@ -11,13 +11,16 @@ namespace Choi.MyProj.UI
     /// @j_choi 2020.08.06
     public class Manager : SingletonMonoBehaviour<Manager>
     {
-        [SerializeField] private VirtualCameraInEditor m_virtualCamera;
+        public Camera NowCamera { get; private set; }
+        public bool IsActive => gameObject.activeSelf;
 
-        [SerializeField] public Camera NowCamera { get; private set; }
+#if UNITY_EDITOR
+        [SerializeField] private VirtualCameraInEditor m_virtualCamera;
 
         public VirtualCameraInEditor VirtualCameraInEditor => m_virtualCamera;
 
-        public bool IsActive => gameObject.activeSelf;
+        public bool IsVirtualCameraInEditorActive => m_virtualCamera.gameObject.activeSelf;
+#endif
 
         /// <summary>
         /// Awake
@@ -33,7 +36,6 @@ namespace Choi.MyProj.UI
         /// </summary>
         private void Start()
         {
-            m_virtualCamera.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -47,6 +49,18 @@ namespace Choi.MyProj.UI
             }
         }
 
-        public void SetNowCamera(Camera camera) => NowCamera = camera;
+        public void SetNowCamera(Camera camera)
+        {
+            NowCamera = camera;
+            Debug.Log(NowCamera.name);
+        }
+
+#if UNITY_EDITOR
+        public bool VirtualCameraInEditorActive(bool isOn)
+        {
+            m_virtualCamera.gameObject.SetActive(isOn);
+            return m_virtualCamera.gameObject.activeSelf == isOn;
+        }
+#endif
     }
 }

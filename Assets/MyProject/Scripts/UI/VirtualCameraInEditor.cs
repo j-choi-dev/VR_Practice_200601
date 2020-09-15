@@ -60,7 +60,6 @@ namespace Choi.MyProj.UI.System
         /// </summary>
         private void OnEnable()
         {
-            Debug.Log("OnEnable");
             transform.rotation = Quaternion.identity;
         }
 
