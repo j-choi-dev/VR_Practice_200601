@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Choi.MyProj.Domain.System;
-using Choi.MyProj.Domain.Editor;
-using IRepository = Choi.MyProj.Domain.Editor.IVirtualStateInEditor;
 
 namespace Choi.MyProj.UseCase.System
 {
 #if UNITY_EDITOR
+    using IRepository = Domain.Editor.IVirtualStateInEditor;
+
     /// <summary>
     /// Editor での Virtual State 変更する UseCase
     /// </summary>

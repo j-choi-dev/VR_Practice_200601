@@ -30,14 +30,12 @@ namespace UnityEngine.UI
 
         public void OnButtonClick()
         {
-            Debug.Log("OnClick()");
             if (OnClick == null) return;
             OnClick();
         }
 
         public void OnButtonRelease()
         {
-            Debug.Log("OnRelease()");
             if (OnRelease == null) return;
             OnRelease();
         }

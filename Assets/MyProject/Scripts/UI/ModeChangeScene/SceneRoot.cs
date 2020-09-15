@@ -68,10 +68,6 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
-            if(VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual && Application.isEditor)
-            {
-                m_camera.gameObject.SetActive(false);
-            }
             return true;
         }
 

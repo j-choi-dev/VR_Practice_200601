@@ -40,17 +40,6 @@ namespace Choi.MyProj.UI.Scene.Test
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
-            if (VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual && Application.isEditor)
-            {
-                m_camera.gameObject.SetActive(false);
-            }
-            if(VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual)
-            {
-                m_canvas.renderMode = RenderMode.WorldSpace;
-                //m_canvas.worldCamera = Application.isEditor ? Manager.Instance.VirtualCameraInEditor.GetCamera() : m_camera;
-                m_canvas.worldCamera = Manager.Instance.NowCamera;
-                m_canvas.planeDistance = 2f;
-            }
             m_button.Init(OnButtonClick, OnButtonRelease);
             return true;
         }

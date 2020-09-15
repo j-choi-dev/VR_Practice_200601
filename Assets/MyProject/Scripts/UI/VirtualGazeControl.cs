@@ -36,8 +36,13 @@ namespace Choi.MyProj.UI
 		/// </summary>
 		private void GazeProcess()
 		{
+#if UNITY_EDITOR
+			var virtualState = new Repository.Editor.VirtualStateInEditorRepository();
+			if (virtualState.Get() != Domain.System.VirtualState.Virtual) return;
+#else
 			if (VirtualControlAPI.Instance.NowCameraState != Domain.System.VirtualState.Virtual) return;
-			var ray = Manager.Instance.NowCamera.ScreenPointToRay((Vector2)Manager.Instance.NowCamera.transform.forward);
+#endif
+            var ray = Manager.Instance.NowCamera.ScreenPointToRay((Vector2)Manager.Instance.NowCamera.transform.forward);
 			if (Application.isEditor) Debug.DrawLine(ray.origin, ray.direction * 100f, Color.red);
 			// Rayの長さ
 			float maxDistance = 10;
@@ -46,8 +51,7 @@ namespace Choi.MyProj.UI
 			if (hit.collider == null)
 			{
 				if (m_currentLookAtButton == null) return;
-				m_currentLookAtButton.OnButtonRelease();
-				if (Application.isEditor) Debug.Log($"{m_currentLookAtObject.name} Released");
+				m_currentLookAtButton.OnButtonRelease(); 
 				m_currentLookAtButton = null;
 				m_currentLookAtObject = null;
 				return;
@@ -55,16 +59,13 @@ namespace Choi.MyProj.UI
 			if (m_currentLookAtObject != hit.collider.gameObject)
 			{
 				m_currentLookAtObject = hit.collider.gameObject;
-				if (Application.isEditor) Debug.Log($"{m_currentLookAtObject.gameObject.name} Get");
 				m_currentLookAtHandlerClickTime = Time.realtimeSinceStartup + 2f;
 				m_currentLookAtButton = m_currentLookAtObject.GetComponent<ButtonImpl>();
 				if (m_currentLookAtButton == null) return;
-				if (Application.isEditor) Debug.Log($"{m_currentLookAtButton.gameObject.name} Set");
 			}
 			if (m_currentLookAtObject != null && Time.realtimeSinceStartup > m_currentLookAtHandlerClickTime)
 			{
 				m_currentLookAtHandlerClickTime = float.MaxValue;
-				if (Application.isEditor) Debug.Log($"{m_currentLookAtButton.gameObject.name} Run");
 				m_currentLookAtButton.OnButtonClick();
 			}
 		}
