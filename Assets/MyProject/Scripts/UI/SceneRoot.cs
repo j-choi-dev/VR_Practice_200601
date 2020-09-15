@@ -40,11 +40,11 @@ namespace Choi.MyProj.UI.Scene.Test
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
-            if (VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual && Application.isEditor)
+            if (VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual && Application.isEditor)
             {
                 m_camera.gameObject.SetActive(false);
             }
-            if(VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual)
+            if(VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual)
             {
                 m_canvas.renderMode = RenderMode.WorldSpace;
                 //m_canvas.worldCamera = Application.isEditor ? Manager.Instance.VirtualCameraInEditor.GetCamera() : m_camera;

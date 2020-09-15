@@ -30,7 +30,7 @@ namespace Choi.MyProj.Interface.API.System
         /// <summary>
         /// 現時点での Camera State
         /// </summary>
-        public CameraState NowCameraState => CameraModeInfo.State;
+        public VirtualState NowCameraState => CameraModeInfo.State;
 
         /// <summary>
         /// 現時点での Virtual Reality SDK State
@@ -64,7 +64,7 @@ namespace Choi.MyProj.Interface.API.System
         /// </summary>
         /// <param name="state">更新するステータス</param>
         /// <returns>更新結果</returns>
-        public async UniTask<bool> SetCameraState(CameraState state)
+        public async UniTask<bool> SetCameraState(VirtualState state)
         {
             // Virtual 変換 UseCase実行
             var usecase = new VirtualModeChangeUseCase();

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.EventSystems;
-
+using Choi.MyProj.Interface.API.System;
 
 namespace Choi.MyProj.UI
 {
@@ -36,6 +36,7 @@ namespace Choi.MyProj.UI
 		/// </summary>
 		private void GazeProcess()
 		{
+			if (VirtualControlAPI.Instance.NowCameraState != Domain.System.VirtualState.Virtual) return;
 			var ray = Manager.Instance.NowCamera.ScreenPointToRay((Vector2)Manager.Instance.NowCamera.transform.forward);
 			if (Application.isEditor) Debug.DrawLine(ray.origin, ray.direction * 100f, Color.red);
 			// Rayの長さ

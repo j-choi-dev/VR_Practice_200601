@@ -1,6 +1,10 @@
 ﻿namespace Choi.MyProj.Domain.System
 {
-    public enum CameraState
+    public struct KeyValue
+    {
+        public const string VirtualStateKeyValue = "VirtualState";
+    }
+    public enum VirtualState
     {
         NONE,
         Normal,
