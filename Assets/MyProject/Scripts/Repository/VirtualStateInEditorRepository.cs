@@ -17,7 +17,7 @@ namespace Choi.MyProj.Repository.Editor
         /// <returns><Editorで指定されているモード/returns>
         public VirtualState Get()
         {
-            var intVal = PlayerPrefs.GetInt(KeyValue.VirtualStateKeyValue, (int)VirtualState.Normal);
+            var intVal = UnityEditor.EditorPrefs.GetInt(KeyValue.VirtualStateKeyValue, (int)VirtualState.Normal);
             return (VirtualState)Enum.ToObject(typeof(VirtualState), intVal);
         }
 
@@ -28,8 +28,8 @@ namespace Choi.MyProj.Repository.Editor
         /// <returns>成功/失敗</returns>
         public bool Set(VirtualState value)
         {
-            PlayerPrefs.SetInt(KeyValue.VirtualStateKeyValue, (int)value);
-            return PlayerPrefs.GetInt(KeyValue.VirtualStateKeyValue, (int)VirtualState.Normal) == (int)value;
+            UnityEditor.EditorPrefs.SetInt(KeyValue.VirtualStateKeyValue, (int)value);
+            return UnityEditor.EditorPrefs.GetInt(KeyValue.VirtualStateKeyValue, (int)VirtualState.Normal) == (int)value;
         }
     }
 #endif
