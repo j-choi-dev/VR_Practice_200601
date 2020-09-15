@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Choi.MyProj.UI;
@@ -16,20 +17,6 @@ namespace Choi.MyProj.UI.Scene
     {
         [SerializeField] protected Camera m_camera;
         [SerializeField] protected Canvas m_canvas;
-        /// <summary>
-        /// Awake
-        /// </summary>
-        protected void Awake()
-        {
-            var isActive = Manager.Instance.IsActive;
-            Debug.Log("SceneRootBase Awake");
-            if (VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual)
-            {
-                Manager.Instance.SetNowCamera(Application.isEditor ? Manager.Instance.VirtualCameraInEditor.GetCamera() : m_camera);
-                return;
-            }
-            Manager.Instance.SetNowCamera(m_camera);
-        }
 
         /// <summary>
         /// シーンで使われる Default カメラを取得する
@@ -40,6 +27,51 @@ namespace Choi.MyProj.UI.Scene
         /// シーンのCanvasを取得
         /// </summary>
         public Canvas Canvas => m_canvas;
+
+        /// <summary>
+        /// Awake
+        /// </summary>
+        protected void Awake()
+        {
+            var isActive = Manager.Instance.IsActive;
+            Debug.Log("SceneRootBase Awake");
+            if (VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual)
+            {
+#if UNITY_EDITOR
+                var virtualState = new Repository.Editor.VirtualStateInEditorRepository();
+                if (virtualState.Get() != VirtualState.Virtual)
+                {
+                    SetNormalCanvas();
+                    return;
+                }
+#endif
+                SetVirtualCanvas();
+                return;
+            }
+            SetNormalCanvas();
+            return;
+        }
+
+        private bool SetNormalCanvas()
+        {
+            Manager.Instance.SetNowCamera(m_camera);
+            m_canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            m_canvas.GetComponent<GraphicRaycaster>().enabled = true;
+            return true;
+        }
+
+        private bool SetVirtualCanvas()
+        {
+            m_canvas.renderMode = RenderMode.WorldSpace;
+            m_canvas.planeDistance = 2f;
+            Manager.Instance.SetNowCamera(Application.isEditor ? Manager.Instance.VirtualCameraInEditor.GetCamera() : m_camera);
+            return true;
+        }
+
+        private void OnDestroy()
+        {
+            GC.Collect();
+        }
 
         /// <summary>
         /// シーンチェンジメソッド

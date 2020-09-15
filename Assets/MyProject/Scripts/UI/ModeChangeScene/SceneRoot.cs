@@ -68,7 +68,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
-            if(VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual && Application.isEditor)
+            if(VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual && Application.isEditor)
             {
                 m_camera.gameObject.SetActive(false);
             }
@@ -83,8 +83,8 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
         public async UniTask ChangeModeToVirtual()
         {
             m_image.gameObject.SetActive(true);
-            if (VirtualControlAPI.Instance.NowCameraState != CameraState.NONE
-                && VirtualControlAPI.Instance.NowCameraState != CameraState.Normal)
+            if (VirtualControlAPI.Instance.NowCameraState != VirtualState.NONE
+                && VirtualControlAPI.Instance.NowCameraState != VirtualState.Normal)
             {
                 Debug.Log($"Already CameraMode Virtual : {VirtualControlAPI.Instance.NowCameraState}");
                 return;
@@ -95,7 +95,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
                 return;
             }
             m_image.gameObject.SetActive(false);
-            await VirtualControlAPI.Instance.SetCameraState(CameraState.ChangeToVirtual);
+            await VirtualControlAPI.Instance.SetCameraState(VirtualState.ChangeToVirtual);
             Debug.Log($"Changed CameraMode : {VirtualControlAPI.Instance.NowCameraState}");
 
             m_text.gameObject.SetActive(true);
@@ -106,7 +106,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
             }
             m_text.gameObject.SetActive(false);
             m_BackGround.gameObject.SetActive(false);
-            await VirtualControlAPI.Instance.SetCameraState(CameraState.Virtual);
+            await VirtualControlAPI.Instance.SetCameraState(VirtualState.Virtual);
             Debug.Log($"Changed CameraMode : {VirtualControlAPI.Instance.NowCameraState}");
             await VirtualControlAPI.Instance.SetVirtualSdkActive(true);
             Debug.Log($"Virtual Sdk Activate : {VirtualControlAPI.Instance.NowSdkActiveState}");

@@ -35,7 +35,7 @@ namespace Choi.MyProj.UI.Scene.Init
         /// <returns></returns>
         public override async UniTask<bool> Init()
         {
-            if (VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual && Application.isEditor)
+            if (VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual && Application.isEditor)
             {
                 m_camera.gameObject.SetActive(false);
             }

@@ -7,19 +7,19 @@ namespace Choi.MyProj.Domain.System
 {
     public class CameraModeInfo
     {
-        public static CameraState State { get; private set; } = CameraState.NONE;
+        public static VirtualState State { get; private set; } = VirtualState.NONE;
 
         public CameraModeInfo()
         {
             XRSettings.enabled = false;
-            State = CameraState.Normal;
+            State = VirtualState.Normal;
         }
 
         /// <summary>
         /// Set Normal
         /// </summary>
         /// <returns>ステート</returns>
-        public static Task<CameraState> Set(CameraState state)
+        public static Task<VirtualState> Set(VirtualState state)
         {
             State = state;
             return Task.Run(() => State);
