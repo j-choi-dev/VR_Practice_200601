@@ -9,6 +9,40 @@ namespace Choi.MyProj.UI.System
     public class VirtualCameraInEditor : MonoBehaviour
     {
         /// <summary>
+        /// Editorでのカメラ(Left)
+        /// </summary>
+        [SerializeField] private Camera m_camLeft;
+
+        /// <summary>
+        /// Editorでのカメラ(Right)
+        /// </summary>
+        [SerializeField] private Camera m_camRight;
+
+        /// <summary>
+        /// Editorでのカメラ(Face For Center)
+        /// </summary>
+        [SerializeField] private Camera m_camCenter;
+
+        /// <summary>
+        /// Cameraを取得
+        /// </summary>
+        /// <param name="isLeft"></param>
+        /// <returns></returns>
+        public Camera GetCamera(bool isLeft)
+        {
+            return isLeft ? m_camLeft : m_camRight;
+        }
+
+        /// <summary>
+        /// Cameraを取得
+        /// </summary>
+        /// <returns></returns>
+        public Camera GetCamera()
+        {
+            return m_camCenter;
+        }
+
+        /// <summary>
         /// Rotation Speed
         /// </summary>
         private const float turnSpeed = 270;
@@ -26,7 +60,6 @@ namespace Choi.MyProj.UI.System
         /// </summary>
         private void OnEnable()
         {
-            Debug.Log("OnEnable");
             transform.rotation = Quaternion.identity;
         }
 

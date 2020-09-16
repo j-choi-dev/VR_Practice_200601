@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Choi.MyProj.Domain.System;
 using Choi.MyProj.Interface.API.System;
+using UnityEngine.UI;
 
 namespace Choi.MyProj.UI.Scene.Test
 {
@@ -13,27 +14,16 @@ namespace Choi.MyProj.UI.Scene.Test
     /// </summary>
     public class SceneRoot : SceneRootBase
     {
-        /// <summary>
-        /// シーンで使われる Default カメラ
-        /// </summary>
-        [SerializeField] private Camera m_camera;
-
+        [SerializeField] GameObject aaa;
+        [SerializeField] private ButtonImpl m_button;
         /// <summary>
         /// Start
         /// </summary>
         private async void Start()
         {
             Debug.Log("[CHOI] Test Scene");
+            aaa.SetActive(false);
             await Init();
-        }
-
-        /// <summary>
-        /// シーンで使われる Default カメラを外からアクセス
-        /// </summary>
-        /// <returns>シーンで使われる Default カメラ</returns>
-        public override Camera GetSceneDefaultCamera()
-        {
-            return m_camera;
         }
 
         /// <summary>
@@ -50,11 +40,19 @@ namespace Choi.MyProj.UI.Scene.Test
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
-            if (VirtualControlAPI.Instance.NowCameraState == CameraState.Virtual && Application.isEditor)
-            {
-                m_camera.gameObject.SetActive(false);
-            }
+            m_button.Init(OnButtonClick, OnButtonRelease);
             return true;
+        }
+
+        public void OnButtonClick()
+        {
+            aaa.SetActive(true);
+            Debug.Log($"Clicked : {aaa.activeSelf} ()");
+        }
+        public void OnButtonRelease()
+        {
+            aaa.SetActive(false);
+            Debug.Log($"Released : {aaa.activeSelf} ()");
         }
     }
 }
