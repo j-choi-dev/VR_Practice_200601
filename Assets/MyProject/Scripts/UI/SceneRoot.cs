@@ -4,7 +4,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Choi.MyProj.Domain.System;
-using Choi.MyProj.Interface.API.System;
+using Choi.MyProj.Interface.API.Virtual;
 using UnityEngine.UI;
 
 namespace Choi.MyProj.UI.Scene.Test

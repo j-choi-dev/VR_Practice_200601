@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Choi.MyProj.UI.Editor
 {
 #if UNITY_EDITOR
-    public static class EnvironmentSetting
+    public static class EnvironmentSettingMenuItem
     {
         /// <summary>
         /// EditorでVirtualモードとして実行するかをチェック入れるメニュー

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using Choi.MyProj.Domain.System;
-using Choi.MyProj.Interface.API.System;
+using Choi.MyProj.Interface.API.Virtual;
 
 namespace Choi.MyProj.UI.Scene.ModeChangeScene
 {

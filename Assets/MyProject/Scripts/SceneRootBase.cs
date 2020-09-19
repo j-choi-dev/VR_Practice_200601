@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Choi.MyProj.UI;
 using Cysharp.Threading.Tasks;
-using Choi.MyProj.Interface.API.System;
+using Choi.MyProj.Interface.API.Virtual;
 using Choi.MyProj.Domain.System;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;

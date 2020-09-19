@@ -4,7 +4,7 @@ using UnityEngine.XR;
 using Cysharp.Threading.Tasks;
 using Choi.MyProj.Domain.System;
 
-namespace Choi.MyProj.Repository.System
+namespace Choi.MyProj.Repository.Virtual
 {
     /// <summary>
     /// Virtual Camera Control Class
