@@ -6,7 +6,7 @@ using Choi.MyProj.Domain.System;
 using Choi.MyProj.UI;
 using Choi.MyProj.UI.Scene;
 
-namespace Choi.MyProj.Repository.System
+namespace Choi.MyProj.Repository.Virtual
 {
 #if UNITY_EDITOR
     /// <summary>
