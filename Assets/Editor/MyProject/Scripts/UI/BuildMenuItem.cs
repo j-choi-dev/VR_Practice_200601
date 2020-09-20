@@ -119,7 +119,7 @@ namespace Choi.MyProj.UI.Editor.Build
             switch (EditorUserBuildSettings.activeBuildTarget)
             {
                 case BuildTarget.Android:
-                    return await BuildAPI.BuildOnlyRomPreReleaseAndroid(true);
+                    return await BuildAPI.BuildOnlyRomPreReleaseAndroidByMenu(true);
             }
             Debug.LogError("Invalid Platform");
             return false;
@@ -135,7 +135,7 @@ namespace Choi.MyProj.UI.Editor.Build
             switch (EditorUserBuildSettings.activeBuildTarget)
             {
                 case BuildTarget.Android:
-                    return await BuildAPI.BuildAllPreReleaseAndroid(false);
+                    return await BuildAPI.BuildOnlyRomPreReleaseAndroidByMenu(false);
             }
             Debug.LogError("Invalid Platform");
             return false;

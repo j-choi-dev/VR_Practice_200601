@@ -72,20 +72,40 @@ namespace Choi.MyProj.API.Editor.Build
         /// Builds the only rom release(APK) android.
         /// </summary>
         /// <returns>全体手順の最終的な成功/失敗結果</returns>
-        public static async Task<bool> BuildOnlyRomPreReleaseAndroid(bool isUseAAB = false)
+        public static async Task<bool> BuildOnlyRomPreReleaseAndroidByMenu(bool isUseAAB)
         {
+            Debug.Log($"[CHOI] BuildOnlyRomPreReleaseAndroidByMenu({isUseAAB})");
+            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
+            {
+                Debug.LogError("Invalid Platform");
+                return false;
+            }
+            return await BuildOnlyRomPreRelease(string.Empty, true, isUseAAB);
+        }
+
+        /// <summary>
+        /// Builds the only rom release(APK) android.
+        /// </summary>
+        /// <returns>全体手順の最終的な成功/失敗結果</returns>
+        public static async Task<bool> BuildOnlyRomPreReleaseAndroid()
+        {
+            Debug.Log($"[CHOI] BuildOnlyRomPreReleaseAndroid()");
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
             {
                 Debug.LogError("Invalid Platform");
                 return false;
             }
             var args = System.Environment.GetCommandLineArgs();
+            foreach (var arg in args)
+            {
+                Debug.Log($" arg = {arg}");
+            }
             var buildTag = args.SkipWhile(element => !element.Equals(BuildTagKey)).Skip(1).FirstOrDefault();
             var buildTagVal = string.IsNullOrEmpty(buildTag) ? string.Empty : buildTag;
             var useAab = args.SkipWhile(element => !element.Equals(UseAabSuffix)).Skip(1).FirstOrDefault();
-            var _isUseAab = string.IsNullOrEmpty(useAab) ? false :
-                    (useAab.Equals("yes") || useAab.Equals("true")) ? true : false ;
-            return await BuildOnlyRomPreRelease(buildTagVal, true, isUseAAB || _isUseAab);
+            var _isUseAab = string.IsNullOrEmpty(useAab) ? false : (useAab.Equals("yes") || useAab.Equals("true")) ? true : false;
+            Debug.Log($"[CHOI] buildTag = {buildTag}, useAab = {useAab}({_isUseAab})");
+            return await BuildOnlyRomPreRelease(buildTagVal, true, _isUseAab);
         }
 
         /// <summary>
@@ -202,8 +222,7 @@ namespace Choi.MyProj.API.Editor.Build
             var buildTag = System.Environment.GetCommandLineArgs().SkipWhile(element => !element.Equals(BuildTagKey)).Skip(1).FirstOrDefault();
             var buildTagVal = string.IsNullOrEmpty(buildTag) ? string.Empty : buildTag;
             var useAab = System.Environment.GetCommandLineArgs().SkipWhile(element => !element.Equals(UseAabSuffix)).Skip(1).FirstOrDefault();
-            var _isUseAab = string.IsNullOrEmpty(useAab) ? false :
-                    (useAab.Equals("yes") || useAab.Equals("true")) ? true : false;
+            var _isUseAab = string.IsNullOrEmpty(useAab) ? false : (useAab.Equals("yes") || useAab.Equals("true")) ? true : false;
             return await BuildAllPreRelease(buildTagVal, true, isUseAAB || _isUseAab);
         }
 
