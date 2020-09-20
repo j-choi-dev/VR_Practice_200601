@@ -3,9 +3,9 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Choi.MyProj.Domain.System;
 using Choi.MyProj.UseCase.System;
-using Choi.MyProj.Repository.System;
+using Choi.MyProj.Repository.Virtual;
 
-namespace Choi.MyProj.Interface.API.System
+namespace Choi.MyProj.Interface.API.Virtual
 {
     /// <summary>
     ///  Virtual Mode Control API Class

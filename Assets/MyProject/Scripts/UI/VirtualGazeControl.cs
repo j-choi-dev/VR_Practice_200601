@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.EventSystems;
-using Choi.MyProj.Interface.API.System;
+using Choi.MyProj.Interface.API.Virtual;
 
 namespace Choi.MyProj.UI
 {
