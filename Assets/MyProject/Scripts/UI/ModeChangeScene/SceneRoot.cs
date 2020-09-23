@@ -92,7 +92,14 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
             }
             m_image.gameObject.SetActive(false);
             await VirtualControlAPI.Instance.SetCameraState(VirtualState.ChangeToVirtual);
+            m_BackGround.gameObject.SetActive(false);
+            await VirtualControlAPI.Instance.SetVirtualSdkActive(true);
+            Manager.Instance.SetNowCamera(Manager.Instance.VirtualCameraInEditor.GetCamera());
+            Debug.Log($"Virtual Sdk Activate : {VirtualControlAPI.Instance.NowSdkActiveState}");
+            await VirtualControlAPI.Instance.SetCameraState(VirtualState.Virtual);
             Debug.Log($"Changed CameraMode : {VirtualControlAPI.Instance.NowCameraState}");
+            SetVirtualCanvas();
+            await UniTask.DelayFrame(1);
 
             m_text.gameObject.SetActive(true);
             if (!await DoCountDown())
@@ -101,11 +108,6 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
                 return;
             }
             m_text.gameObject.SetActive(false);
-            m_BackGround.gameObject.SetActive(false);
-            await VirtualControlAPI.Instance.SetCameraState(VirtualState.Virtual);
-            Debug.Log($"Changed CameraMode : {VirtualControlAPI.Instance.NowCameraState}");
-            await VirtualControlAPI.Instance.SetVirtualSdkActive(true);
-            Debug.Log($"Virtual Sdk Activate : {VirtualControlAPI.Instance.NowSdkActiveState}");
             SceneChangeToNext();
         }
 
@@ -145,7 +147,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
 #if !UNITY_EDITOR
                 await UniTask.Delay(1000);
 #else
-                await UniTask.Delay(100);
+                await UniTask.Delay(1000);
 #endif
                 timer -= 1f;
             }

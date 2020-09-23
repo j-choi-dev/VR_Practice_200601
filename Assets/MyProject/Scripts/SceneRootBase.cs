@@ -38,7 +38,7 @@ namespace Choi.MyProj.UI.Scene
             var isActive = Manager.Instance.IsActive;
 #if UNITY_EDITOR
             var virtualState = new Repository.Editor.VirtualStateInEditorRepository();
-            if (virtualState.Get() == VirtualState.Virtual)
+            if (virtualState.Get() == VirtualState.Virtual && VirtualControlAPI.Instance.NowCameraState == VirtualState.Virtual)
             {
                 Manager.Instance.VirtualCameraInEditorActive(true);
                 m_camera.gameObject.SetActive(false);
@@ -64,18 +64,23 @@ namespace Choi.MyProj.UI.Scene
             return;
         }
 
-        private bool SetNormalCanvas()
+        public bool SetNormalCanvas()
         {
             m_canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             m_canvas.GetComponent<GraphicRaycaster>().enabled = true;
+            m_canvas.transform.position = Vector3.zero;
+            m_canvas.transform.localScale = Vector3.one;
             return true;
         }
 
-        private bool SetVirtualCanvas()
+        public bool SetVirtualCanvas()
         {
             m_canvas.renderMode = RenderMode.WorldSpace;
             m_canvas.planeDistance = 2f;
             m_canvas.worldCamera = Manager.Instance.NowCamera;
+            m_canvas.transform.position = new Vector3(0, 0, 3f);
+            m_canvas.transform.localScale = Vector3.one * 0.01f;
+            Debug.Log(m_canvas.worldCamera.name);
             return true;
         }
 
