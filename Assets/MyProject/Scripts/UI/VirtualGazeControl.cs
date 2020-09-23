@@ -38,7 +38,7 @@ namespace Choi.MyProj.UI
 		{
 #if UNITY_EDITOR
 			var virtualState = new Repository.Editor.VirtualStateInEditorRepository();
-			if (virtualState.Get() != Domain.System.VirtualState.Virtual) return;
+			if (virtualState.Get() != Domain.System.VirtualState.Virtual || VirtualControlAPI.Instance.NowCameraState != Domain.System.VirtualState.Virtual) return;
 #else
 			if (VirtualControlAPI.Instance.NowCameraState != Domain.System.VirtualState.Virtual) return;
 #endif
