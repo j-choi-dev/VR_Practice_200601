@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Choi.MyProj.Domain.System;
+using Choi.MyProj.Domain.Virtual;
 using Choi.MyProj.Interface.API.Virtual;
-using Choi.MyProj.UI.System;
+using Choi.MyProj.UI.Virtual;
 
 namespace Choi.MyProj.UI
 {
