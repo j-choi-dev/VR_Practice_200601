@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using Choi.MyProj.Domain.System;
-using Choi.MyProj.UseCase.System;
+using Choi.MyProj.Domain.Virtual;
+using Choi.MyProj.UseCase.Virtual;
 using Choi.MyProj.Repository.Virtual;
 
 namespace Choi.MyProj.Interface.API.Virtual
