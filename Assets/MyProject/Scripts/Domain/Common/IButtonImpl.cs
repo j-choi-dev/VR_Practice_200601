@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-namespace UnityEngine.Domain
+namespace Choi.MyProj.Domain.Common
 {
     /// <summary>
     /// このプロジェクトで使う、ボタンの Component Interface

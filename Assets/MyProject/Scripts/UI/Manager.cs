@@ -52,11 +52,11 @@ namespace Choi.MyProj.UI
         public void SetNowCamera(Camera camera)
         {
             NowCamera = camera;
-            Debug.Log(NowCamera.name);
+            Debug.Log($"SetNowCamera = {camera}");
         }
 
 #if UNITY_EDITOR
-        public bool VirtualCameraInEditorActive(bool isOn)
+        public bool VirtualCameraInEditorActive(bool isOn) 
         {
             m_virtualCamera.gameObject.SetActive(isOn);
             return m_virtualCamera.gameObject.activeSelf == isOn;

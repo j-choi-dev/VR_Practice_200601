@@ -49,6 +49,7 @@ namespace Choi.MyProj.UI.Scene
 
             Manager.Instance.VirtualCameraInEditorActive(false);
             m_camera.gameObject.SetActive(true);
+            Manager.Instance.SetNowCamera(m_camera);
             SetNormalCanvas();
             return;
 #endif

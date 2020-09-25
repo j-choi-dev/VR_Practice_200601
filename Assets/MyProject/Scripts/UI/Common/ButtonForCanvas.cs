@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using UnityEngine.Domain;
+using Choi.MyProj.Domain.Common;
 
-namespace UnityEngine.UI
+namespace Choi.MyProj.UI
 {
-    public sealed class ButtonImpl : Button, IButtonImpl
+    public sealed class ButtonForCanvas : Button, IButtonImpl
     {
         [SerializeField] string m_text;
         public UnityAction OnClick { get; private set; }
@@ -15,6 +15,7 @@ namespace UnityEngine.UI
 
         public void Init(UnityAction actionClick, UnityAction actionExit)
         {
+            Debug.Log($"{actionClick}, {actionExit}");
             OnClick = onClick != null ? onClick.Invoke :  actionClick;
             OnRelease = actionExit;
         }
@@ -22,6 +23,7 @@ namespace UnityEngine.UI
         public void OnButtonClick()
         {
             if (OnClick == null) return;
+            Debug.Log($"OnClick Run");
             OnClick();
         }
 

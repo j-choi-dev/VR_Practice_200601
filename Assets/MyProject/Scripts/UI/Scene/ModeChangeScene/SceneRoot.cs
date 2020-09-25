@@ -59,7 +59,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
         /// </summary>
         public override void SceneChangeToNext()
         {
-            SceneManager.LoadScene("666_Test");
+            SceneManager.LoadScene("11_Main");
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
 #if !UNITY_EDITOR
                 await UniTask.Delay(1000);
 #else
-                await UniTask.Delay(1000);
+                await UniTask.Delay(300);
 #endif
                 timer -= 1f;
             }

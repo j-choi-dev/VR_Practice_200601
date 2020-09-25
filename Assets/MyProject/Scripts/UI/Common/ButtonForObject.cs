@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.Events;
-using UnityEngine.Domain;
+using Choi.MyProj.Domain.Common;
 
-namespace UnityEngine.UI
+namespace Choi.MyProj.UI
 {
     public sealed class ButtonForObject : MonoBehaviour, IButtonImpl
     {

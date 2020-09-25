@@ -28,7 +28,6 @@ namespace Choi.MyProj.UI.Editor
             Menu.SetChecked(UseVirtualInEditorMenuPath, !isChecked);
             isChecked = Menu.GetChecked(UseVirtualInEditorMenuPath);
             var result = await usecase.Execute(isChecked ? VirtualState.Virtual : VirtualState.Normal);
-            Debug.Log($"{isChecked} : {result}");
         }
     }
 #endif
