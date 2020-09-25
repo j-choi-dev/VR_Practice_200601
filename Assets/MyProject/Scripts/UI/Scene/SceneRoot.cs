@@ -4,16 +4,15 @@ using UnityEngine.SceneManagement;
 using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
 
-namespace Choi.MyProj.UI.Scene.Test
+namespace Choi.MyProj.UI.Scene.Main
 {
     public class SceneRoot : SceneRootBase
     {
         [SerializeField] private ButtonForObject m_button;
-        [SerializeField] private ButtonForCanvas aaa;
 
         private async void Start()
         {
-            Debug.Log("[CHOI] Test Scene");
+            Debug.Log("[CHOI] Main Scene");
             await Init();
         }
 
@@ -32,7 +31,6 @@ namespace Choi.MyProj.UI.Scene.Test
         public override async UniTask<bool> Init()
         {
             m_button.Init(OnButtonClick, OnButtonRelease);
-            aaa.Init(aaaa, bbbb);
             return true;
         }
 
@@ -43,16 +41,6 @@ namespace Choi.MyProj.UI.Scene.Test
 
         public void OnButtonRelease()
         {
-        }
-
-        public void aaaa()
-        {
-            Debug.Log("Click");
-        }
-
-        public void bbbb()
-        {
-            Debug.Log("Released");
         }
     }
 }

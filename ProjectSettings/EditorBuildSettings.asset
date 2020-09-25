@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/MyProject/Scenes/01_Switch.unity
     guid: 13808b4726aa6474c8fece6f74212f85
   - enabled: 1
+    path: Assets/MyProject/Scenes/11_Main.unity
+    guid: 0778db0da68f04a9fa831c76f98ae9d1
+  - enabled: 1
+    path: Assets/MyProject/Scenes/21_Game.unity
+    guid: bba1e625d54e34001ac52371fbb2e608
+  - enabled: 1
     path: Assets/MyProject/Scenes/666_Test.unity
     guid: 364f064a487db4f3d98872182347d33a
   m_configObjects:
