@@ -36,14 +36,6 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
         [SerializeField] private SimpleText m_text;
 
         /// <summary>
-        /// Awake
-        /// </summary>
-        private void Awake()
-        {
-            base.Awake();
-        }
-
-        /// <summary>
         /// Start
         /// </summary>
         private async void Start()
