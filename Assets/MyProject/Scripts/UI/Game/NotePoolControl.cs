@@ -77,13 +77,13 @@ namespace Choi.MyProj.UI.InGame
             {
                 var obj = poolingQueue.Dequeue();
                 obj.transform.SetParent(null);
-                obj.gameObject.SetActive(true);
+                //obj.gameObject.SetActive(true);
                 return obj;
             }
             else
             {
                 var newObj = CreateNewObject(side);
-                newObj.gameObject.SetActive(true);
+                //newObj.gameObject.SetActive(true);
                 newObj.transform.SetParent(null);
                 return newObj;
             }

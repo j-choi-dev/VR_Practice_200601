@@ -15,6 +15,7 @@ namespace Choi.MyProj.UI.Scene.InGame
         private async void Start()
         {
             await Init();
+            await m_manager.Run();
         }
         
         /// <summary>
