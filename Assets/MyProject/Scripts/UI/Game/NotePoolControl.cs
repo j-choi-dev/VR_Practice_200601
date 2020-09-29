@@ -44,7 +44,7 @@ namespace Choi.MyProj.UI.InGame
         public async Task<bool> Init()
         {
             Debug.Log($"NotePoolControl.Init()");
-            for (int i = 0; i<Value.NoteCountMax; i++)
+            for (int i = 0; i<Value.MockCount; i++)
             {
                 m_notePoolLeft.Enqueue(CreateNewObject(NoteSide.Left));
                 m_notePoolRight.Enqueue(CreateNewObject(NoteSide.Right));

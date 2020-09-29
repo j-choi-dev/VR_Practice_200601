@@ -26,6 +26,9 @@ namespace Choi.MyProj.UI.InGame
                 Debug.LogError("m_notePool.Init() FAILED");
                 return false;
             }
+            // TODO ここでCSVデータを読み込む
+            Debug.Log($"TODO ここでCSVデータを読み込む");
+
             if (!await m_musicControl.Init())
             {
                 Debug.LogError("m_musicControl.Init() FAILED");
@@ -36,22 +39,60 @@ namespace Choi.MyProj.UI.InGame
 
         public async UniTask<bool> Run()
         {
-            var count = 0;
+            var mockId = 0;
             var mockDelay = 500;
+            NoteSide mockSide;
 
-            while (count < 10)
+            while (mockId < 10)
             {
                 var add = Random.Range(1, 5) * 100;
-                NoteSide noteSide = count % 2 == 0 ? NoteSide.Left : NoteSide.Right;
-                var startTr = noteSide == NoteSide.Left ? m_startLeft : m_startRight;
-                var destTr = noteSide == NoteSide.Left ? m_destLeft : m_destRight;
-                var note = m_notePool.GetObject(noteSide);
-                note.Init(noteSide, startTr, destTr);
+                mockSide = mockId % 2 == 0 ? NoteSide.Left : NoteSide.Right;
+                var startTr = mockSide == NoteSide.Left ? m_startLeft : m_startRight;
+                var destTr = mockSide == NoteSide.Left ? m_destLeft : m_destRight;
+                var note = m_notePool.GetObject(mockSide);
+                note.name = $"{mockId}_{mockSide}";
+                note.Init(mockSide, startTr, destTr, Judgement);
                 note.gameObject.SetActive(true);
                 await UniTask.Delay(mockDelay + add, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
-                count++;
+                mockId++;
             }
             return true;
+        }
+
+        private void FixedUpdate()
+        {
+            Ray ray;
+#if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS)
+
+#elif UNITY_EDITOR
+            if (Input.GetMouseButtonUp(0))
+            {
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Debug.DrawLine(Manager.Instance.NowCamera.transform.position, ray.direction * 100f);
+                RaycastHit hitInfo;
+                if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, Value.NoteObjectLayer))
+                {
+                    Debug.Log($"TODO Poolに返す(判定) : { hitInfo.point},{ hitInfo.collider.name}");
+                    var note = hitInfo.collider.GetComponent<NoteObject>();
+                    if(note == null)
+                    {
+                        Debug.LogError("NoteObject Component is NULL");
+                        return;
+                    }
+                }
+            }
+#endif
+        }
+
+        private void Judgement(NoteObject note, Score defaultScore = Score.Miss)
+        {
+            var destTr = note.Side == NoteSide.Left ? m_destLeft : m_destRight;
+            if(defaultScore != Score.Miss)
+            {
+                var noowDist = Vector3.Distance(destTr.localPosition, note.transform.localPosition);
+                Debug.Log($"TODO ここで判定を行う");
+            }
+            m_notePool.ReturnObject(note);
         }
     }
 }

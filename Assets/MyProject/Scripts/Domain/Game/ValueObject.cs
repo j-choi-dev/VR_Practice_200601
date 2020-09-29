@@ -10,7 +10,15 @@ namespace Choi.MyProj.Domain.InGame
     /// </summary>
     public struct Value
     {
-        public const int NoteCountMax = 10;
+        public const int MockCount = 10; // TODO これモック
+
+        public const float ColliderActiveDistance = 1.5f;
+
+        public const float OverJudgementDistance = 1f;
+
+        public const float OverJudgementDelta = -0.5f;
+
+        public const int NoteObjectLayer = 1 << 12;
     }
 
     /// <summary>
@@ -20,5 +28,17 @@ namespace Choi.MyProj.Domain.InGame
     {
         Left,
         Right,
+    }
+
+    /// <summary>
+    /// Score 判定
+    /// </summary>
+    public enum Score
+    {
+        Perfect,
+        Greate,
+        Good,
+        Bad,
+        Miss,
     }
 }
