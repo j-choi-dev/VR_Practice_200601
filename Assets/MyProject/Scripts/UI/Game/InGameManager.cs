@@ -17,6 +17,9 @@ namespace Choi.MyProj.UI.InGame
         [SerializeField] private NotePoolControl m_notePool;
         [SerializeField] private MusicControl m_musicControl;
 
+        private NoteInfoControl m_noteInfoControl;
+
+        private IList<NoteInfo> m_notetList;
         private IList<NoteResult> m_resultList;
 
         private int MockValue = 10;
@@ -24,6 +27,7 @@ namespace Choi.MyProj.UI.InGame
         private void Awake()
         {
             m_resultList = new List<NoteResult>();
+            m_noteInfoControl = new NoteInfoControl();
         }
 
         // Start is called before the first frame update
@@ -35,8 +39,8 @@ namespace Choi.MyProj.UI.InGame
                 Debug.LogError("m_notePool.Init() FAILED");
                 return false;
             }
-            // TODO ここでCSVデータを読み込む
-            Debug.Log($"TODO ここでCSVデータを読み込む");
+            m_notetList = await m_noteInfoControl.Init();
+            foreach (var info in m_notetList) Debug.Log($"{info.ID}, {info.Time}, {info.Type}, {info.DeltaTime}");
 
             if (!await m_musicControl.Init())
             {
@@ -50,17 +54,17 @@ namespace Choi.MyProj.UI.InGame
         {
             var mockId = 0;
             var mockDelay = 500;
-            NoteSide mockSide;
+            NoteType mockType;
 
             while (mockId < MockValue)
             {
                 var add = Random.Range(1, 5) * 100;
-                mockSide = mockId % 2 == 0 ? NoteSide.Left : NoteSide.Right;
-                var startTr = mockSide == NoteSide.Left ? m_startLeft : m_startRight;
-                var destTr = mockSide == NoteSide.Left ? m_destLeft : m_destRight;
-                var note = m_notePool.GetObject(mockSide);
-                note.name = $"{mockId}_{mockSide}";
-                note.Init(mockId, mockSide, startTr, destTr, Judgement);
+                mockType = mockId % 2 == 0 ? NoteType.Left : NoteType.Right;
+                var startTr = mockType == NoteType.Left ? m_startLeft : m_startRight;
+                var destTr = mockType == NoteType.Left ? m_destLeft : m_destRight;
+                var note = m_notePool.GetObject(mockType);
+                note.name = $"{mockId}_{mockType}";
+                note.Init(mockId, mockType, startTr, destTr, Judgement);
                 note.gameObject.SetActive(true);
                 await UniTask.Delay(mockDelay + add, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
                 mockId++;
@@ -106,7 +110,7 @@ namespace Choi.MyProj.UI.InGame
 
         private void Judgement(NoteObject note, Judgement defaultScore = Domain.InGame.Judgement.None)
         {
-            var destTr = note.Side == NoteSide.Left ? m_destLeft : m_destRight;
+            var destTr = note.Type == NoteType.Left ? m_destLeft : m_destRight;
             var judge = defaultScore;
             if(defaultScore != Domain.InGame.Judgement.Miss)
             {

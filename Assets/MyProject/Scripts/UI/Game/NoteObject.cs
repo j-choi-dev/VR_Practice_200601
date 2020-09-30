@@ -22,7 +22,7 @@ namespace Choi.MyProj.UI.InGame
         /// <summary>
         /// Note の位置
         /// </summary>
-        public NoteSide Side { get; private set; }
+        public NoteType Type { get; private set; }
 
         /// <summary>
         /// 目標 Trasnform 
@@ -43,10 +43,10 @@ namespace Choi.MyProj.UI.InGame
         /// Note Object Init
         /// </summary>
         /// <param name="side"Note の位置></param>
-        public void Init(int id, NoteSide side, Transform startTr, Transform destTr, Action<NoteObject, Judgement> judgementAction)
+        public void Init(int id, NoteType type, Transform startTr, Transform destTr, Action<NoteObject, Judgement> judgementAction)
         {
             ID = id;
-            Side = side;
+            Type = type;
             m_destTr = destTr;
             m_judgementAction = judgementAction;
             transform.localPosition = startTr.position;

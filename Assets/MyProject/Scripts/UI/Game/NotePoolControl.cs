@@ -46,8 +46,8 @@ namespace Choi.MyProj.UI.InGame
             Debug.Log($"NotePoolControl.Init()");
             for (int i = 0; i<Value.MockCount; i++)
             {
-                m_notePoolLeft.Enqueue(CreateNewObject(NoteSide.Left));
-                m_notePoolRight.Enqueue(CreateNewObject(NoteSide.Right));
+                m_notePoolLeft.Enqueue(CreateNewObject(NoteType.Left));
+                m_notePoolRight.Enqueue(CreateNewObject(NoteType.Right));
             }
             return true;
         }
@@ -57,9 +57,9 @@ namespace Choi.MyProj.UI.InGame
         /// </summary>
         /// <param name="side"Note の座標(これに基づいて Pool を選ぶ)></param>
         /// <returns>Note Object</returns>
-        private NoteObject CreateNewObject(NoteSide side)
+        private NoteObject CreateNewObject(NoteType type)
         {
-            var newObj = Instantiate(side == NoteSide.Left ? m_prefabLeft : m_prefabRight).GetComponent<NoteObject>();
+            var newObj = Instantiate(type == NoteType.Left ? m_prefabLeft : m_prefabRight).GetComponent<NoteObject>();
             newObj.gameObject.SetActive(false);
             newObj.transform.SetParent(transform);
             return newObj;
@@ -70,20 +70,18 @@ namespace Choi.MyProj.UI.InGame
         /// </summary>
         /// <param name="side"Note の座標(これに基づいて Pool を選ぶ)></param>
         /// <returns>Note Object</returns>
-        public NoteObject GetObject(NoteSide side)
+        public NoteObject GetObject(NoteType type)
         {
-            var poolingQueue = side == NoteSide.Left ? m_notePoolLeft : m_notePoolRight;
+            var poolingQueue = type == NoteType.Left ? m_notePoolLeft : m_notePoolRight;
             if (poolingQueue.Count > 0)
             {
                 var obj = poolingQueue.Dequeue();
                 obj.transform.SetParent(null);
-                //obj.gameObject.SetActive(true);
                 return obj;
             }
             else
             {
-                var newObj = CreateNewObject(side);
-                //newObj.gameObject.SetActive(true);
+                var newObj = CreateNewObject(type);
                 newObj.transform.SetParent(null);
                 return newObj;
             }
@@ -96,7 +94,7 @@ namespace Choi.MyProj.UI.InGame
         /// <returns>返還に成功したら True</returns>
         public bool ReturnObject(NoteObject obj)
         {
-            var poolingQueue = obj.Side == NoteSide.Left ? m_notePoolLeft : m_notePoolRight;
+            var poolingQueue = obj.Type == NoteType.Left ? m_notePoolLeft : m_notePoolRight;
             obj.gameObject.SetActive(false);
             obj.transform.SetParent(transform);
             poolingQueue.Enqueue(obj);
