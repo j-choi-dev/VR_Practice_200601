@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 
 namespace Choi.MyProj.Domain.InGame
@@ -19,6 +19,27 @@ namespace Choi.MyProj.Domain.InGame
         public const float OverJudgementDelta = -0.5f;
 
         public const int NoteObjectLayer = 1 << 12;
+
+        public struct ScoreJedge
+        {
+            public const int Bad = 150;
+            public const int Good = 100;
+            public const int Greate = 60;
+            public const int Perfect = 30;
+        }
+    }
+
+    public struct NoteResult
+    {
+        public int ID { get; private set; }
+
+        public Judgement Judgement { get; private set; }
+
+        public NoteResult(int id, Judgement judge)
+        {
+            ID = id;
+            Judgement = judge;
+        }
     }
 
     /// <summary>
@@ -33,8 +54,9 @@ namespace Choi.MyProj.Domain.InGame
     /// <summary>
     /// Score 判定
     /// </summary>
-    public enum Score
+    public enum Judgement
     {
+        None,
         Perfect,
         Greate,
         Good,

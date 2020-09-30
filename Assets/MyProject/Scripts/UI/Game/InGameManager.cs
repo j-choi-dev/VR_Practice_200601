@@ -17,6 +17,15 @@ namespace Choi.MyProj.UI.InGame
         [SerializeField] private NotePoolControl m_notePool;
         [SerializeField] private MusicControl m_musicControl;
 
+        private IList<NoteResult> m_resultList;
+
+        private int MockValue = 10;
+
+        private void Awake()
+        {
+            m_resultList = new List<NoteResult>();
+        }
+
         // Start is called before the first frame update
         public async UniTask<bool> Init()
         {
@@ -43,7 +52,7 @@ namespace Choi.MyProj.UI.InGame
             var mockDelay = 500;
             NoteSide mockSide;
 
-            while (mockId < 10)
+            while (mockId < MockValue)
             {
                 var add = Random.Range(1, 5) * 100;
                 mockSide = mockId % 2 == 0 ? NoteSide.Left : NoteSide.Right;
@@ -51,10 +60,20 @@ namespace Choi.MyProj.UI.InGame
                 var destTr = mockSide == NoteSide.Left ? m_destLeft : m_destRight;
                 var note = m_notePool.GetObject(mockSide);
                 note.name = $"{mockId}_{mockSide}";
-                note.Init(mockSide, startTr, destTr, Judgement);
+                note.Init(mockId, mockSide, startTr, destTr, Judgement);
                 note.gameObject.SetActive(true);
                 await UniTask.Delay(mockDelay + add, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
                 mockId++;
+                Debug.Log(mockId);
+                if (mockId >= 10) break;
+            }
+            while(m_resultList.Count < MockValue)
+            {
+                await UniTask.WaitForEndOfFrame();
+            }
+            foreach( var result in m_resultList)
+            {
+                Debug.Log($"RESULT : {result.ID}, {result.Judgement}");
             }
             return true;
         }
@@ -79,19 +98,43 @@ namespace Choi.MyProj.UI.InGame
                         Debug.LogError("NoteObject Component is NULL");
                         return;
                     }
+                    Judgement(note);
                 }
             }
 #endif
         }
 
-        private void Judgement(NoteObject note, Score defaultScore = Score.Miss)
+        private void Judgement(NoteObject note, Judgement defaultScore = Domain.InGame.Judgement.None)
         {
             var destTr = note.Side == NoteSide.Left ? m_destLeft : m_destRight;
-            if(defaultScore != Score.Miss)
+            var judge = defaultScore;
+            if(defaultScore != Domain.InGame.Judgement.Miss)
             {
-                var noowDist = Vector3.Distance(destTr.localPosition, note.transform.localPosition);
-                Debug.Log($"TODO ここで判定を行う");
+                var noowDist =(int) (Mathf.Abs(Vector3.Distance(destTr.localPosition, note.transform.localPosition)) * 100f);
+                if(noowDist < Value.ScoreJedge.Bad && noowDist >= Value.ScoreJedge.Good)
+                {
+                    judge = Domain.InGame.Judgement.Bad;
+                }
+                else if (noowDist < Value.ScoreJedge.Good && noowDist >= Value.ScoreJedge.Greate)
+                {
+                    judge = Domain.InGame.Judgement.Good;
+                }
+                else if (noowDist < Value.ScoreJedge.Greate && noowDist >= Value.ScoreJedge.Perfect)
+                {
+                    judge = Domain.InGame.Judgement.Greate;
+                }
+                else if (noowDist < Value.ScoreJedge.Perfect)
+                {
+                    judge = Domain.InGame.Judgement.Perfect;
+                }
+                else
+                {
+                    judge = Domain.InGame.Judgement.Miss;
+                }
             }
+            var result = new NoteResult(note.ID, judge);
+            Debug.Log($"Add({result.ID},{result.Judgement})");
+            m_resultList.Add(result);
             m_notePool.ReturnObject(note);
         }
     }

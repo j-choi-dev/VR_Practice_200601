@@ -15,6 +15,11 @@ namespace Choi.MyProj.UI.InGame
         [SerializeField] private Collider m_collider;
 
         /// <summary>
+        /// Note ID
+        /// </summary>
+        public int ID { get; private set; }
+
+        /// <summary>
         /// Note の位置
         /// </summary>
         public NoteSide Side { get; private set; }
@@ -32,14 +37,15 @@ namespace Choi.MyProj.UI.InGame
         /// <summary>
         /// Pool に戻す(For Over)
         /// </summary>
-        private Action<NoteObject, Score> m_judgementAction;
+        private Action<NoteObject, Judgement> m_judgementAction;
 
         /// <summary>
         /// Note Object Init
         /// </summary>
         /// <param name="side"Note の位置></param>
-        public void Init(NoteSide side, Transform startTr, Transform destTr, Action<NoteObject, Score> judgementAction)
+        public void Init(int id, NoteSide side, Transform startTr, Transform destTr, Action<NoteObject, Judgement> judgementAction)
         {
+            ID = id;
             Side = side;
             m_destTr = destTr;
             m_judgementAction = judgementAction;
@@ -58,7 +64,8 @@ namespace Choi.MyProj.UI.InGame
             if (noowDist > Value.OverJudgementDistance && transform.localPosition.z - m_destTr.position.z < Value.OverJudgementDelta)
             {
                 Debug.Log($"TODO Poolに返す(Over)_{name}");
-                m_judgementAction(this, Score.Miss);
+                m_judgementAction(this, Judgement.Miss);
+                return;
             }
             transform.Translate(m_dirVec * Time.deltaTime, Space.World);
         }
