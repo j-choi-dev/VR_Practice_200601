@@ -52,6 +52,7 @@ namespace Choi.MyProj.UI.InGame
 
         public async UniTask<bool> Run()
         {
+            m_musicControl.PlayMusic();
             var noteCount = m_noteList.Count - 2;
             foreach (var note in m_noteList)
             {
@@ -64,11 +65,11 @@ namespace Choi.MyProj.UI.InGame
                 noteObject.gameObject.SetActive(true);
                 await UniTask.Delay(note.DeltaTime, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
             }
-            while(m_resultList.Count < noteCount)
+            while (m_resultList.Count < noteCount)
             {
                 await UniTask.WaitForEndOfFrame();
             }
-            foreach( var result in m_resultList)
+            foreach (var result in m_resultList)
             {
                 Debug.Log($"RESULT : {result.ID}, {result.Judgement}");
             }
