@@ -39,8 +39,8 @@ namespace Choi.MyProj.UI.InGame
                 Debug.LogError("m_notePool.Init() FAILED");
                 return false;
             }
+
             m_notetList = await m_noteInfoControl.Init();
-            foreach (var info in m_notetList) Debug.Log($"{info.ID}, {info.Time}, {info.Type}, {info.DeltaTime}");
 
             if (!await m_musicControl.Init())
             {
