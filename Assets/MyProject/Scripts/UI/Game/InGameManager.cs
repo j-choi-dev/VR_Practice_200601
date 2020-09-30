@@ -19,7 +19,7 @@ namespace Choi.MyProj.UI.InGame
 
         private NoteInfoControl m_noteInfoControl;
 
-        private IList<NoteInfo> m_notetList;
+        private IList<NoteInfo> m_noteList;
         private IList<NoteResult> m_resultList;
 
         private int MockValue = 10;
@@ -40,7 +40,7 @@ namespace Choi.MyProj.UI.InGame
                 return false;
             }
 
-            m_notetList = await m_noteInfoControl.Init();
+            m_noteList = await m_noteInfoControl.Init();
 
             if (!await m_musicControl.Init())
             {
@@ -52,26 +52,19 @@ namespace Choi.MyProj.UI.InGame
 
         public async UniTask<bool> Run()
         {
-            var mockId = 0;
-            var mockDelay = 500;
-            NoteType mockType;
-
-            while (mockId < MockValue)
+            var noteCount = m_noteList.Count - 2;
+            foreach (var note in m_noteList)
             {
-                var add = Random.Range(1, 5) * 100;
-                mockType = mockId % 2 == 0 ? NoteType.Left : NoteType.Right;
-                var startTr = mockType == NoteType.Left ? m_startLeft : m_startRight;
-                var destTr = mockType == NoteType.Left ? m_destLeft : m_destRight;
-                var note = m_notePool.GetObject(mockType);
-                note.name = $"{mockId}_{mockType}";
-                note.Init(mockId, mockType, startTr, destTr, Judgement);
-                note.gameObject.SetActive(true);
-                await UniTask.Delay(mockDelay + add, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
-                mockId++;
-                Debug.Log(mockId);
-                if (mockId >= 10) break;
+                if (note.Type == NoteType.Start || note.Type == NoteType.Finish) continue;
+                var startTr = note.Type == NoteType.Left ? m_startLeft : m_startRight;
+                var destTr = note.Type == NoteType.Left ? m_destLeft : m_destRight;
+                var noteObject = m_notePool.GetObject(note.Type);
+                noteObject.name = $"{note.ID}_{note.Type}";
+                noteObject.Init(note.ID, note.Type, startTr, destTr, Judgement);
+                noteObject.gameObject.SetActive(true);
+                await UniTask.Delay(note.DeltaTime, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
             }
-            while(m_resultList.Count < MockValue)
+            while(m_resultList.Count < noteCount)
             {
                 await UniTask.WaitForEndOfFrame();
             }
@@ -137,7 +130,6 @@ namespace Choi.MyProj.UI.InGame
                 }
             }
             var result = new NoteResult(note.ID, judge);
-            Debug.Log($"Add({result.ID},{result.Judgement})");
             m_resultList.Add(result);
             m_notePool.ReturnObject(note);
         }
