@@ -75,7 +75,7 @@ namespace Choi.MyProj.UI.InGame
                     material = note.Type == NoteType.Left ? m_leftNoteMaterial : m_rightNoteMaterial;
                 }
                 noteObject.Init(note.ID, note.Type, material, startTr, destTr, NoteJudgement);
-                await UniTask.Delay(note.DeltaTime, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
+                await UniTask.Delay(note.DeltaTime > 0 ? note.DeltaTime : 1, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
                 noteObject.gameObject.SetActive(true);
             }
             while (m_resultList.Count < m_noteList.Count)
