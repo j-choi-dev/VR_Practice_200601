@@ -14,27 +14,16 @@ namespace Choi.MyProj.UI.InGame
         /// <summary>
         /// Left Prefab
         /// </summary>
-        [SerializeField] private NoteObject m_prefabLeft;
-
-        /// <summary>
-        /// Right Prefab
-        /// </summary>
-        [SerializeField] private NoteObject m_prefabRight;
+        [SerializeField] private NoteObject m_prefab;
 
         /// <summary>
         /// Left Pool
         /// </summary>
-        [SerializeField] private Queue<NoteObject> m_notePoolLeft;
-
-        /// <summary>
-        /// Right Pool
-        /// </summary>
-        [SerializeField] private Queue<NoteObject> m_notePoolRight;
+        [SerializeField] private Queue<NoteObject> m_notePool;
 
         private void Awake()
         {
-            m_notePoolLeft = new Queue<NoteObject>();
-            m_notePoolRight = new Queue<NoteObject>();
+            m_notePool = new Queue<NoteObject>();
         }
 
         /// <summary>
@@ -46,8 +35,7 @@ namespace Choi.MyProj.UI.InGame
             Debug.Log($"NotePoolControl.Init()");
             for (int i = 0; i<Value.MockCount; i++)
             {
-                m_notePoolLeft.Enqueue(CreateNewObject(NoteType.Left));
-                m_notePoolRight.Enqueue(CreateNewObject(NoteType.Right));
+                m_notePool.Enqueue(CreateNewObject());
             }
             return true;
         }
@@ -57,9 +45,9 @@ namespace Choi.MyProj.UI.InGame
         /// </summary>
         /// <param name="side"Note の座標(これに基づいて Pool を選ぶ)></param>
         /// <returns>Note Object</returns>
-        private NoteObject CreateNewObject(NoteType type)
+        private NoteObject CreateNewObject()
         {
-            var newObj = Instantiate(type == NoteType.Left ? m_prefabLeft : m_prefabRight).GetComponent<NoteObject>();
+            var newObj = Instantiate(m_prefab).GetComponent<NoteObject>();
             newObj.gameObject.SetActive(false);
             newObj.transform.SetParent(transform);
             return newObj;
@@ -70,18 +58,17 @@ namespace Choi.MyProj.UI.InGame
         /// </summary>
         /// <param name="side"Note の座標(これに基づいて Pool を選ぶ)></param>
         /// <returns>Note Object</returns>
-        public NoteObject GetObject(NoteType type)
+        public NoteObject GetObject()
         {
-            var poolingQueue = type == NoteType.Left ? m_notePoolLeft : m_notePoolRight;
-            if (poolingQueue.Count > 0)
+            if (m_notePool.Count > 0)
             {
-                var obj = poolingQueue.Dequeue();
+                var obj = m_notePool.Dequeue();
                 obj.transform.SetParent(null);
                 return obj;
             }
             else
             {
-                var newObj = CreateNewObject(type);
+                var newObj = CreateNewObject();
                 newObj.transform.SetParent(null);
                 return newObj;
             }
@@ -94,10 +81,9 @@ namespace Choi.MyProj.UI.InGame
         /// <returns>返還に成功したら True</returns>
         public bool ReturnObject(NoteObject obj)
         {
-            var poolingQueue = obj.Type == NoteType.Left ? m_notePoolLeft : m_notePoolRight;
             obj.gameObject.SetActive(false);
             obj.transform.SetParent(transform);
-            poolingQueue.Enqueue(obj);
+            m_notePool.Enqueue(obj);
             return true;
         }
     }

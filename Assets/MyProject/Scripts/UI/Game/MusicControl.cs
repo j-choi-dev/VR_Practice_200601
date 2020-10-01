@@ -28,6 +28,11 @@ namespace Choi.MyProj.UI.InGame
         public void StopMusic() => m_audioSource.Stop();
 
         /// <summary>
+        /// Is Audio Playing Now
+        /// </summary>
+        public bool IsPlayingNow => m_audioSource.isPlaying;
+
+        /// <summary>
         /// Init
         /// </summary>
         /// <returns>Init Result</returns>

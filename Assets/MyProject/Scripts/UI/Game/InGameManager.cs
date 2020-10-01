@@ -17,12 +17,14 @@ namespace Choi.MyProj.UI.InGame
         [SerializeField] private NotePoolControl m_notePool;
         [SerializeField] private MusicControl m_musicControl;
 
+        [SerializeField] private Material m_leftNoteMaterial;
+        [SerializeField] private Material m_rightNoteMaterial;
+        [SerializeField] private Material m_flagNoteMaterial;
+
         private NoteInfoControl m_noteInfoControl;
 
         private IList<NoteInfo> m_noteList;
         private IList<NoteResult> m_resultList;
-
-        private int MockValue = 10;
 
         private void Awake()
         {
@@ -52,20 +54,31 @@ namespace Choi.MyProj.UI.InGame
 
         public async UniTask<bool> Run()
         {
-            m_musicControl.PlayMusic();
-            var noteCount = m_noteList.Count - 2;
+            Transform startTr;
+            Transform destTr;
+            Material material;
+
             foreach (var note in m_noteList)
             {
-                if (note.Type == NoteType.Start || note.Type == NoteType.Finish) continue;
-                var startTr = note.Type == NoteType.Left ? m_startLeft : m_startRight;
-                var destTr = note.Type == NoteType.Left ? m_destLeft : m_destRight;
-                var noteObject = m_notePool.GetObject(note.Type);
+                var noteObject = m_notePool.GetObject();
                 noteObject.name = $"{note.ID}_{note.Type}";
-                noteObject.Init(note.ID, note.Type, startTr, destTr, Judgement);
-                noteObject.gameObject.SetActive(true);
+                if (note.Type == NoteType.Start || note.Type == NoteType.Finish)
+                {
+                    startTr = note.Type == NoteType.Start ? m_startLeft : m_startRight;
+                    destTr = note.Type == NoteType.Start ? m_destLeft : m_destRight;
+                    material = m_flagNoteMaterial;
+                }
+                else
+                {
+                    startTr = note.Type == NoteType.Left ? m_startLeft : m_startRight;
+                    destTr = note.Type == NoteType.Left ? m_destLeft : m_destRight;
+                    material = note.Type == NoteType.Left ? m_leftNoteMaterial : m_rightNoteMaterial;
+                }
+                noteObject.Init(note.ID, note.Type, material, startTr, destTr, NoteJudgement);
                 await UniTask.Delay(note.DeltaTime, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
+                noteObject.gameObject.SetActive(true);
             }
-            while (m_resultList.Count < noteCount)
+            while (m_resultList.Count < m_noteList.Count)
             {
                 await UniTask.WaitForEndOfFrame();
             }
@@ -96,38 +109,50 @@ namespace Choi.MyProj.UI.InGame
                         Debug.LogError("NoteObject Component is NULL");
                         return;
                     }
-                    Judgement(note);
+                    NoteJudgement(note);
                 }
             }
 #endif
         }
 
-        private void Judgement(NoteObject note, Judgement defaultScore = Domain.InGame.Judgement.None)
+        private void NoteJudgement(NoteObject note, Judgement defaultScore = Judgement.None)
         {
             var destTr = note.Type == NoteType.Left ? m_destLeft : m_destRight;
             var judge = defaultScore;
-            if(defaultScore != Domain.InGame.Judgement.Miss)
+            if(defaultScore != Judgement.None)
             {
                 var noowDist =(int) (Mathf.Abs(Vector3.Distance(destTr.localPosition, note.transform.localPosition)) * 100f);
                 if(noowDist < Value.ScoreJedge.Bad && noowDist >= Value.ScoreJedge.Good)
                 {
-                    judge = Domain.InGame.Judgement.Bad;
+                    judge = Judgement.Bad;
                 }
                 else if (noowDist < Value.ScoreJedge.Good && noowDist >= Value.ScoreJedge.Greate)
                 {
-                    judge = Domain.InGame.Judgement.Good;
+                    judge = Judgement.Good;
                 }
                 else if (noowDist < Value.ScoreJedge.Greate && noowDist >= Value.ScoreJedge.Perfect)
                 {
-                    judge = Domain.InGame.Judgement.Greate;
+                    judge = Judgement.Greate;
                 }
                 else if (noowDist < Value.ScoreJedge.Perfect)
                 {
-                    judge = Domain.InGame.Judgement.Perfect;
+                    judge = Judgement.Perfect;
                 }
                 else
                 {
-                    judge = Domain.InGame.Judgement.Miss;
+                    judge = Judgement.Miss;
+                }
+            }
+            else
+            {
+                if(note.Type == NoteType.Start && !m_musicControl.IsPlayingNow)
+                {
+                    Debug.Log("Music Start");
+                    m_musicControl.PlayMusic();
+                }
+                else if (note.Type == NoteType.Finish && m_musicControl.IsPlayingNow)
+                {
+                    m_musicControl.StopMusic();
                 }
             }
             var result = new NoteResult(note.ID, judge);
