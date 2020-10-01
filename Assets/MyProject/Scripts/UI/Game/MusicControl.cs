@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Choi.MyProj.Interface.API;
 using Cysharp.Threading.Tasks;
 
 
@@ -15,11 +16,6 @@ namespace Choi.MyProj.UI.InGame
         /// Audio Source
         /// </summary>
         [SerializeField] private AudioSource m_audioSource;
-
-        /// <summary>
-        /// Audioc Clip
-        /// </summary>
-        private AudioClip m_nowClip;
 
         /// <summary>
         /// Audio Play
@@ -41,21 +37,9 @@ namespace Choi.MyProj.UI.InGame
             m_audioSource.playOnAwake = false;
             m_audioSource.loop = false;
 
-            var mock = "AudioSource/SampleMusic";
-            var request = Resources.LoadAsync<AudioClip>(mock);
-            if (request.asset == null)
-            {
-                Debug.Log($"Couldn't Find '{request.asset.name}'");
-                return false;
-            }
-            while (!request.isDone)
-            {
-                await UniTask.WaitForFixedUpdate();
-                Debug.Log($"{request.asset.name} : {request.progress * 100f} %");
-            }
-            m_nowClip = request.asset as AudioClip;
-
-            m_audioSource.clip = m_nowClip;
+            var mock = "Song_001";
+            var clip = await AssetLoaderAPI.Instance.LoadAudioClip(mock);
+            m_audioSource.clip = clip;
             return true;
         }
     }
