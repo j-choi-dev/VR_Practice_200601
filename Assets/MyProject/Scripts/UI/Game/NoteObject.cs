@@ -7,12 +7,17 @@ namespace Choi.MyProj.UI.InGame
     /// <summary>
     /// Note Object
     /// </summary>
-    public sealed class NoteObject : MonoBehaviour
+    public class NoteObject : MonoBehaviour
     {
         /// <summary>
         /// Collider
         /// </summary>
-        [SerializeField] private Collider m_collider;
+        [SerializeField] protected Collider m_collider;
+
+        /// <summary>
+        /// Renderer
+        /// </summary>
+        [SerializeField] protected Renderer m_renderer;
 
         /// <summary>
         /// Note ID
@@ -27,12 +32,12 @@ namespace Choi.MyProj.UI.InGame
         /// <summary>
         /// 目標 Trasnform 
         /// </summary>
-        private Transform m_destTr;
+        public Transform m_destTr { get; private set; }
 
         /// <summary>
         /// 進行方向
         /// </summary>
-        private Vector3 m_dirVec;
+        private Vector3 m_dirVector;
 
         /// <summary>
         /// Pool に戻す(For Over)
@@ -43,14 +48,15 @@ namespace Choi.MyProj.UI.InGame
         /// Note Object Init
         /// </summary>
         /// <param name="side"Note の位置></param>
-        public void Init(int id, NoteType type, Transform startTr, Transform destTr, Action<NoteObject, Judgement> judgementAction)
+        public void Init(int id, NoteType type, Material material, Transform startTr, Transform destTr, Action<NoteObject, Judgement> judgementAction)
         {
             ID = id;
             Type = type;
+            m_renderer.material = material;
             m_destTr = destTr;
             m_judgementAction = judgementAction;
             transform.localPosition = startTr.position;
-            m_dirVec = (m_destTr.position - transform.localPosition).normalized;
+            m_dirVector = (m_destTr.position - transform.localPosition).normalized;
         }
 
         /// <summary>
@@ -59,15 +65,39 @@ namespace Choi.MyProj.UI.InGame
         private void FixedUpdate()
         {
             if (!gameObject.activeSelf) return;
+            if (Type == NoteType.Left || Type == NoteType.Right)
+            {
+                MusicNoteMoveProcess();
+            }
+            else
+            {
+                FlagNoteMoveProcess();
+            }
+        }
+
+        public void MusicNoteMoveProcess()
+        {
             var noowDist = Vector3.Distance(m_destTr.localPosition, transform.localPosition);
             m_collider.enabled = noowDist < Value.ColliderActiveDistance ? true : false;
             if (noowDist > Value.OverJudgementDistance && transform.localPosition.z - m_destTr.position.z < Value.OverJudgementDelta)
             {
-                Debug.Log($"TODO Poolに返す(Over)_{name}");
+                //Debug.Log($"TODO Poolに返す(Over)_{name}");
                 m_judgementAction(this, Judgement.Miss);
                 return;
             }
-            transform.Translate(m_dirVec * Time.deltaTime, Space.World);
+            transform.Translate(m_dirVector * 2f * Time.deltaTime, Space.World);
+        }
+
+        public void FlagNoteMoveProcess()
+        {
+            var noowDist = Vector3.Distance(m_destTr.localPosition, transform.localPosition);
+            m_collider.enabled = noowDist < Value.ColliderActiveDistance ? true : false;
+            if (noowDist < Value.OverJudgementDistance)
+            {
+                Debug.Log($"TODO 音楽再生イベント実行{name}:{Type}");
+                m_judgementAction(this, Judgement.None);
+            }
+            transform.Translate(m_dirVector * 2f * Time.deltaTime, Space.World);
         }
     }
 }

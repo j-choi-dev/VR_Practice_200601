@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7374879414209469505}
   - component: {fileID: 4587340844376511747}
   - component: {fileID: 6081540104423444377}
-  - component: {fileID: 6100530780856267287}
+  - component: {fileID: 462360589561365495}
   m_Layer: 0
-  m_Name: NoteL
+  m_Name: NoteObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e825dd5fab8d46a18d0f2e638f7e3bd, type: 2}
+  - {fileID: 2100000, guid: 2c4b4171d8b224c6d9b7704bacf8d1ac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,7 +94,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6100530780856267287
+--- !u!114 &462360589561365495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,3 +107,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_collider: {fileID: 6081540104423444377}
+  m_renderer: {fileID: 4587340844376511747}

@@ -209,7 +209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 133412906}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 12}
+  m_LocalPosition: {x: 0, y: 2, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 383779918}
@@ -503,6 +503,9 @@ MonoBehaviour:
   m_destRight: {fileID: 93804506}
   m_notePool: {fileID: 1194313492}
   m_musicControl: {fileID: 1463453663}
+  m_leftNoteMaterial: {fileID: 2100000, guid: 5e825dd5fab8d46a18d0f2e638f7e3bd, type: 2}
+  m_rightNoteMaterial: {fileID: 2100000, guid: f067496b9e3da4b428e7e4273f65deb1, type: 2}
+  m_flagNoteMaterial: {fileID: 2100000, guid: 2c4b4171d8b224c6d9b7704bacf8d1ac, type: 2}
 --- !u!4 &476311181
 Transform:
   m_ObjectHideFlags: 0
@@ -819,10 +822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889e8bfb4ca55418d89ccb50aeeeb654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_prefabLeft: {fileID: 6100530780856267287, guid: 11cf959c6db1040be9c53177c39c035e,
-    type: 3}
-  m_prefabRight: {fileID: 293751675024154285, guid: c8bdb44ef6c0d43a5a7a257f788f7a75,
-    type: 3}
+  m_prefab: {fileID: 462360589561365495, guid: 11cf959c6db1040be9c53177c39c035e, type: 3}
 --- !u!1001 &1209727521
 PrefabInstance:
   m_ObjectHideFlags: 0
