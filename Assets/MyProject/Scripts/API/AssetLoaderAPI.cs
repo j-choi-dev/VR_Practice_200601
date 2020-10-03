@@ -26,6 +26,7 @@ namespace Choi.MyProj.Interface.API
         {
             var path = $"AudioSource/{fileName}";
             var asset = await LoadAsset(path);
+            Debug.Log($"<AudioClip> {asset.name}");
             return asset as AudioClip;
         }
 
@@ -38,6 +39,7 @@ namespace Choi.MyProj.Interface.API
         {
             var path =$"TextAssets/{fileName}";
             var asset = await LoadAsset(path);
+            Debug.Log($"<TextAsset> {asset.name}");
             return asset as TextAsset;
         }
 
