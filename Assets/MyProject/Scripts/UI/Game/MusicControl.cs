@@ -32,6 +32,8 @@ namespace Choi.MyProj.UI.InGame
         /// </summary>
         public bool IsPlayingNow => m_audioSource.isPlaying;
 
+        private bool m_isPause;
+
         /// <summary>
         /// Init
         /// </summary>
@@ -45,7 +47,18 @@ namespace Choi.MyProj.UI.InGame
             var mock = "Song_001";
             var clip = await AssetLoaderAPI.Instance.LoadAudioClip(mock);
             m_audioSource.clip = clip;
+            m_isPause = false;
             return true;
         }
+
+        /// <summary>
+        /// 音楽 PAUSE
+        /// </summary>
+        public void Pause() => m_audioSource.Pause();
+
+        /// <summary>
+        /// 音楽 Continue
+        /// </summary>
+        public void Continue() => m_audioSource.UnPause();
     }
 }
