@@ -6,9 +6,11 @@ using Choi.MyProj.UI.InGame;
 
 namespace Choi.MyProj.UI.Scene.InGame
 {
-    public class SceneRoot : SceneRootBase
+    public sealed class SceneRoot : SceneRootBase
     {
         [SerializeField] private InGameManager m_manager;
+
+        [SerializeField] private ButtonForCanvas m_pause;
         /// <summary>
         /// Start
         /// </summary>
@@ -22,6 +24,16 @@ namespace Choi.MyProj.UI.Scene.InGame
         /// シーンチェンジメソッド
         /// </summary>
         public override void SceneChangeToNext()
+        {
+        }
+
+        public void OnButtonClick()
+        {
+            Debug.Log("Pause");
+            
+        }
+
+        public void OnButtonRelease()
         {
         }
 
