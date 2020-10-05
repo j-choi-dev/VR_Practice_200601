@@ -86,9 +86,7 @@ namespace Choi.MyProj.UI.Scene.ModeChangeScene
             await VirtualControlAPI.Instance.SetCameraState(VirtualState.ChangeToVirtual);
             m_BackGround.gameObject.SetActive(false);
             await VirtualControlAPI.Instance.SetVirtualSdkActive(true);
-#if UNITY_EDITOR
             Manager.Instance.SetNowCamera(Manager.Instance.VirtualCameraInEditor.GetCamera());
-#endif
             Debug.Log($"Virtual Sdk Activate : {VirtualControlAPI.Instance.NowSdkActiveState}");
             await VirtualControlAPI.Instance.SetCameraState(VirtualState.Virtual);
             Debug.Log($"Changed CameraMode : {VirtualControlAPI.Instance.NowCameraState}");
