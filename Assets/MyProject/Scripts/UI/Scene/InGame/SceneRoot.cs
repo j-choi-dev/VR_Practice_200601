@@ -10,7 +10,8 @@ namespace Choi.MyProj.UI.Scene.InGame
     {
         [SerializeField] private InGameManager m_manager;
 
-        [SerializeField] private ButtonForCanvas m_pause;
+        [SerializeField] private ButtonForCanvas m_pauseButton;
+
         /// <summary>
         /// Start
         /// </summary>
@@ -29,7 +30,9 @@ namespace Choi.MyProj.UI.Scene.InGame
 
         public void OnButtonClick()
         {
-            Debug.Log("Pause");
+            // TODO できるのであれば再開の時はカウントダウンを入れるのが User Firendly になるかも
+            Debug.Log("TODO できるのであれば再開の時はカウントダウンを入れるのが User Firendly になるかも");
+            m_manager.PauseAllGameProcess();
             
         }
 
@@ -43,6 +46,7 @@ namespace Choi.MyProj.UI.Scene.InGame
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
+            m_pauseButton.Init(OnButtonClick, OnButtonRelease);
             await m_manager.Init();
             return true;
         }
