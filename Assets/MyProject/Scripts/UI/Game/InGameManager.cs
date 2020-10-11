@@ -156,7 +156,15 @@ namespace Choi.MyProj.UI.InGame
                 {
                     m_setNotePause += noteObject.SetIsPause;
                 }
-                await UniTask.Delay(note.DeltaTime > 0 ? note.DeltaTime : 1, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
+
+                while (m_isPause)
+                {
+                    await UniTask.Delay(1);
+                }
+                await UniTask.Delay(note.DeltaTime > 0 ? note.DeltaTime : 1,
+                    ignoreTimeScale: true,
+                    delayTiming: PlayerLoopTiming.FixedUpdate);
+
                 noteObject.gameObject.SetActive(true);
             }
 
