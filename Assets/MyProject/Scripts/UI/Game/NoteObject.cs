@@ -45,6 +45,11 @@ namespace Choi.MyProj.UI.InGame
         private Action<NoteObject, Judgement> m_judgementAction;
 
         /// <summary>
+        /// 一時停止状態かチェック
+        /// </summary>
+        public bool IsPause { get; private set; } = false;
+
+        /// <summary>
         /// Note Object Init
         /// </summary>
         /// <param name="side"Note の位置></param>
@@ -65,6 +70,7 @@ namespace Choi.MyProj.UI.InGame
         private void FixedUpdate()
         {
             if (!gameObject.activeSelf) return;
+            if (IsPause) return;
             if (Type == NoteType.Left || Type == NoteType.Right)
             {
                 MusicNoteMoveProcess();
@@ -75,6 +81,9 @@ namespace Choi.MyProj.UI.InGame
             }
         }
 
+        /// <summary>
+        /// Note Object 移動プロセス
+        /// </summary>
         public void MusicNoteMoveProcess()
         {
             var noowDist = Vector3.Distance(m_destTr.localPosition, transform.localPosition);
@@ -88,6 +97,9 @@ namespace Choi.MyProj.UI.InGame
             transform.Translate(m_dirVector * 2f * Time.deltaTime, Space.World);
         }
 
+        /// <summary>
+        /// 開始・終了 移動プロセス
+        /// </summary>
         public void FlagNoteMoveProcess()
         {
             var noowDist = Vector3.Distance(m_destTr.localPosition, transform.localPosition);
@@ -98,6 +110,15 @@ namespace Choi.MyProj.UI.InGame
                 m_judgementAction(this, Judgement.None);
             }
             transform.Translate(m_dirVector * 2f * Time.deltaTime, Space.World);
+        }
+
+        /// <summary>
+        /// 移動を一時停止にするかチェック
+        /// </summary>
+        /// <param name="isPause">一時停止にするかしないか</param>
+        public void SetIsPause(bool isPause)
+        {
+            IsPause = isPause;
         }
     }
 }

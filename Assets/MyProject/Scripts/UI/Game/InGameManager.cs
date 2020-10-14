@@ -8,31 +8,95 @@ namespace Choi.MyProj.UI.InGame
 {
     public sealed class InGameManager : MonoBehaviour
     {
+        /// <summary>
+        /// Note Object 生成 Transform 左
+        /// </summary>
         [SerializeField] private Transform m_startLeft;
+
+        /// <summary>
+        /// Note Object 生成 Transform 右
+        /// </summary>
         [SerializeField] private Transform m_startRight;
 
+        /// <summary>
+        /// Note Object 移動目標 Transform 左
+        /// </summary>
         [SerializeField] private Transform m_destLeft;
+
+        /// <summary>
+        /// Note Object 移動目標 Transform 右
+        /// </summary>
         [SerializeField] private Transform m_destRight;
 
+        /// <summary>
+        /// Note Object Pool Controller
+        /// </summary>
         [SerializeField] private NotePoolControl m_notePool;
+
+        /// <summary>
+        /// Music Controller
+        /// </summary>
         [SerializeField] private MusicControl m_musicControl;
 
+        /// <summary>
+        /// Note Object Material 左
+        /// </summary>
         [SerializeField] private Material m_leftNoteMaterial;
+
+        /// <summary>
+        /// Note Object Material 右
+        /// </summary>
         [SerializeField] private Material m_rightNoteMaterial;
+
+        /// <summary>
+        /// Start/Finish など Flag Object Material 右
+        /// </summary>
         [SerializeField] private Material m_flagNoteMaterial;
 
+        /// <summary>
+        /// Note　生成情報をインポートするクラス
+        /// </summary>
         private NoteInfoControl m_noteInfoControl;
 
+        /// <summary>
+        /// 生成される Note のリスト
+        /// </summary>
         private IList<NoteInfo> m_noteList;
+
+        /// <summary>
+        /// 判定結果を帆zんするリスト
+        /// </summary>
         private IList<NoteResult> m_resultList;
 
+        /// <summary>
+        /// 一時停止
+        /// </summary>
+        private bool m_isPause;
+
+        /// <summary>
+        /// Npte Object の移動を一時停止するデリゲート
+        /// </summary>
+        /// <param name="isPause"></param>
+        private delegate void SetNotePause(bool isPause);
+
+        /// <summary>
+        /// Npte Object の移動を一時停止するデリゲート
+        /// </summary>
+        private SetNotePause m_setNotePause;
+
+        /// <summary>
+        /// Awake
+        /// </summary>
         private void Awake()
         {
             m_resultList = new List<NoteResult>();
             m_noteInfoControl = new NoteInfoControl();
         }
 
-        // Start is called before the first frame update
+        /// <summary>
+        /// Initialize
+        /// </summary>
+        /// <returns>Init 結果</returns>
         public async UniTask<bool> Init()
         {
             Debug.Log($"InGameManager.Init()");
@@ -52,6 +116,10 @@ namespace Choi.MyProj.UI.InGame
             return true;
         }
 
+        /// <summary>
+        /// InGame　実行
+        /// </summary>
+        /// <returns>Init 結果</returns>
         public async UniTask<bool> Run()
         {
             Transform startTr;
@@ -62,33 +130,55 @@ namespace Choi.MyProj.UI.InGame
             {
                 var noteObject = m_notePool.GetObject();
                 noteObject.name = $"{note.ID}_{note.Type}";
+
                 if (note.Type == NoteType.Start || note.Type == NoteType.Finish)
                 {
+                    // 開始/終了などのフラグNote Objet
                     startTr = note.Type == NoteType.Start ? m_startLeft : m_startRight;
                     destTr = note.Type == NoteType.Start ? m_destLeft : m_destRight;
                     material = m_flagNoteMaterial;
                 }
                 else
                 {
+                    // 一般的なNote Objet
                     startTr = note.Type == NoteType.Left ? m_startLeft : m_startRight;
                     destTr = note.Type == NoteType.Left ? m_destLeft : m_destRight;
                     material = note.Type == NoteType.Left ? m_leftNoteMaterial : m_rightNoteMaterial;
                 }
+
+                // Note Object Init in Here
                 noteObject.Init(note.ID, note.Type, material, startTr, destTr, NoteJudgement);
-                await UniTask.Delay(note.DeltaTime > 0 ? note.DeltaTime : 1, ignoreTimeScale: true, delayTiming: PlayerLoopTiming.FixedUpdate);
+                if(m_setNotePause == null)
+                {
+                    m_setNotePause = new SetNotePause(noteObject.SetIsPause);
+                }
+                else
+                {
+                    m_setNotePause += noteObject.SetIsPause;
+                }
+
+                while (m_isPause)
+                {
+                    await UniTask.Delay(1);
+                }
+                await UniTask.Delay(note.DeltaTime > 0 ? note.DeltaTime : 1,
+                    ignoreTimeScale: true,
+                    delayTiming: PlayerLoopTiming.FixedUpdate);
+
                 noteObject.gameObject.SetActive(true);
             }
+
+            // InGameの終了条件まで待機
             while (m_resultList.Count < m_noteList.Count)
             {
                 await UniTask.WaitForEndOfFrame();
             }
-            foreach (var result in m_resultList)
-            {
-                Debug.Log($"RESULT : {result.ID}, {result.Judgement}");
-            }
             return true;
         }
 
+        /// <summary>
+        /// Fixed Upadte
+        /// </summary>
         private void FixedUpdate()
         {
             Ray ray;
@@ -115,6 +205,11 @@ namespace Choi.MyProj.UI.InGame
 #endif
         }
 
+        /// <summary>
+        /// Note 判定メソッド
+        /// </summary>
+        /// <param name="note">判定する Note Object</param>
+        /// <param name="defaultScore">明らかなMissではない場合の基本指定</param>
         private void NoteJudgement(NoteObject note, Judgement defaultScore = Judgement.None)
         {
             var destTr = note.Type == NoteType.Left ? m_destLeft : m_destRight;
@@ -157,7 +252,25 @@ namespace Choi.MyProj.UI.InGame
             }
             var result = new NoteResult(note.ID, judge);
             m_resultList.Add(result);
+            m_setNotePause -= note.SetIsPause;
             m_notePool.ReturnObject(note);
+        }
+
+        /// <summary>
+        /// ゲーム全体の動作を一時停止/Continue
+        /// </summary>
+        public void PauseAllGameProcess()
+        {
+            m_isPause = !m_isPause;
+            m_setNotePause(m_isPause);
+            if (m_isPause)
+            {
+                m_musicControl.Pause();
+            }
+            else
+            {
+                m_musicControl.Continue();
+            }
         }
     }
 }

@@ -6,9 +6,12 @@ using Choi.MyProj.UI.InGame;
 
 namespace Choi.MyProj.UI.Scene.InGame
 {
-    public class SceneRoot : SceneRootBase
+    public sealed class SceneRoot : SceneRootBase
     {
         [SerializeField] private InGameManager m_manager;
+
+        [SerializeField] private ButtonForCanvas m_pauseButton;
+
         /// <summary>
         /// Start
         /// </summary>
@@ -25,12 +28,25 @@ namespace Choi.MyProj.UI.Scene.InGame
         {
         }
 
+        public void OnButtonClick()
+        {
+            // TODO できるのであれば再開の時はカウントダウンを入れるのが User Firendly になるかも
+            Debug.Log("TODO できるのであれば再開の時はカウントダウンを入れるのが User Firendly になるかも");
+            m_manager.PauseAllGameProcess();
+            
+        }
+
+        public void OnButtonRelease()
+        {
+        }
+
         /// <summary>
         /// Init
         /// </summary>
         /// <returns>Initialize Result</returns>
         public override async UniTask<bool> Init()
         {
+            m_pauseButton.Init(OnButtonClick, OnButtonRelease);
             await m_manager.Init();
             return true;
         }
