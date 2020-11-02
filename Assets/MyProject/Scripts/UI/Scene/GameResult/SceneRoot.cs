@@ -8,7 +8,6 @@ namespace Choi.MyProj.UI.Scene.GameResult
 {
     public sealed class SceneRoot : SceneRootBase
     {
-
         /// <summary>
         /// Start
         /// </summary>
